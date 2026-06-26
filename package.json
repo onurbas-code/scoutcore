@@ -1,6 +1,6 @@
 {
-  "name": "scoutcore-v5-agenda-players",
-  "version": "5.0.0",
+  "name": "scoutcore-v6-playercore",
+  "version": "6.0.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
