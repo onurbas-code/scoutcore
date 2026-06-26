@@ -1,12 +1,20 @@
-# ScoutCore V4 Elite Interface
+# ScoutCore V5 Agenda & Players Update
 
-- Gönderilen ScoutCore logosu kullanıldı
-- Kulüp/Çorum FK referansı yok
-- Başlangıç sayfası sade komuta merkezi olarak tasarlandı
-- Üst sekmeli yapı: Home, Players, Scouting, Reports, Video Center, Transfer Center, Analytics, AI Module, Settings
-- Yönetim Kurulu bölümü kaldırıldı
-- PDF/CSV Players içine alındı
-- Pozisyon klasörleri dikey klasör mantığında Home içine alındı
-- Video Center korundu ve iyileştirildi
-- Transfer Center içine scout ekleme/silme eklendi
-- Oyuncu ekle/düzenle/sil ve scout raporu düzenleme var
+Bu sürüm kullanıcının son isteklerine göre düzenlendi:
+
+- Home ekranında logo büyütüldü.
+- Home içinden Active Player, Today ve System Snapshot kaldırıldı.
+- Home ekranına ajanda/takvim planlama bölümü eklendi.
+- Üstte Onur Baş yazısı kaldırıldı.
+- AI Module ve Analytics kaldırıldı.
+- Pozisyon klasörleri Home'dan kaldırılıp Players içine taşındı.
+- Players içinde tüm futbolcular mevki klasörlerine göre filtreleniyor.
+- Oyuncu ekleme/düzenleme/silme korundu.
+- Oyuncu fotoğrafı URL ve dosya yükleme alanı eklendi.
+- Scouting sadece scout antrenör ekleme/silme/listeleme/görev alanı olarak düzenlendi.
+- Scout Team bölümü kaldırıldı.
+- Video Center korundu.
+- Build testinden geçti.
+
+## Kurulum
+ZIP içindeki dosyaları GitHub reposunun kök dizinine yükleyin.
