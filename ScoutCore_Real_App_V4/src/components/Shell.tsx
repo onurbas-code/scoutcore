@@ -1,0 +1,5 @@
+import Link from "next/link";
+export function Shell({ children, active, title, subtitle }: { children: React.ReactNode; active: string; title: string; subtitle?: string }) {
+  const nav = [["dashboard","Dashboard","/"],["players","Oyuncu Takip","/players"],["transfer","Transfer Komitesi","/module/transfer"],["kpi","KPI & Grafikler","/module/kpi"],["contracts","Kontrat Yönetimi","/module/contracts"],["network","Dünya Scout Haritası","/module/network"],["td","Teknik Direktör Paneli","/module/td"],["board","Yönetim Kurulu Paneli","/module/board"]];
+  return <div className="shell"><aside className="sidebar"><div className="logo"><div className="mark small">SC</div><div><b>ScoutCore</b><span>Çorum FK Intelligence</span></div></div>{nav.map(([id,label,href])=><Link key={id} href={href} className={`nav ${active===id?"active":""}`}>{label}</Link>)}</aside><main className="main"><header className="header"><div><h2>{title}</h2><p className="muted">{subtitle || "ScoutCore operasyon merkezi"}</p></div><div className="user"><div className="avatar">OB</div><div><b>Onur Baş</b><br/><small>Onur Baş Proje Sahibi</small></div></div></header>{children}</main></div>;
+}
