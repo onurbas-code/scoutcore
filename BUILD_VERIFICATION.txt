@@ -1,22 +1,7 @@
 BUILD OK
 
 
-added 28 packages, and audited 29 packages in 16s
-
-3 packages are looking for funding
-  run `npm fund` for details
-
-2 vulnerabilities (1 moderate, 1 critical)
-
-To address all issues, run:
-  npm audit fix --force
-
-Run `npm audit` for details.
-
-npm warn deprecated next@14.2.5: This version has a security vulnerability. Please upgrade to a patched version. See https://nextjs.org/blog/security-update-2025-12-11 for more details.
-
-
-> scoutcore-complete-project@1.0.0 build
+> scoutcore-v2-premium@2.0.0 build
 > next build
 
 [33m[1m⚠[22m[39m No build cache found. Please configure build caching for faster rebuilds. Read more: https://nextjs.org/docs/messages/no-cache
@@ -40,14 +25,13 @@ You can learn more, including how to opt-out if you'd not like to participate in
  [37m[1m [22m[39m Collecting build traces ...
 
 [4mRoute (app)[24m                              [4mSize[24m     [4mFirst Load JS[24m
-┌ ○ /                                    137 B          [37m[1m87.2 kB[22m[39m
+┌ ○ /                                    4.64 kB        [37m[1m91.7 kB[22m[39m
 └ ○ /_not-found                          871 B          [37m[1m87.9 kB[22m[39m
 + First Load JS shared by all            [37m[1m87 kB[22m[39m
-  ├ chunks/23-b75664ace61c0abb.js        31.5 kB
-  ├ chunks/fd9d1056-2821b0f0cabcd8bd.js  53.6 kB
+  ├ chunks/23-16daa0c0d5d9a55a.js        31.5 kB
+  ├ chunks/fd9d1056-d37e50b4175101a4.js  53.6 kB
   └ other shared chunks (total)          1.86 kB
 
 
 ○  (Static)  prerendered as static content
-
 

@@ -1,31 +1,5 @@
-# ScoutCore Complete Project
+# ScoutCore v2 Premium
 
-Bu paket Vercel deploy için eksiksiz ve temiz Next.js başlangıç projesidir.
+Tıklanabilir menüler, premium logo, oyuncu profili, pozisyon klasörleri, transfer pipeline, KPI ve yönetim ekranları içerir.
 
-## Dosya yapısı
-
-- package.json
-- next.config.mjs
-- tsconfig.json
-- next-env.d.ts
-- src/app/layout.tsx
-- src/app/page.tsx
-- src/app/globals.css
-- src/components/Sidebar.tsx
-- src/components/MetricCard.tsx
-- src/components/PlayerTable.tsx
-- src/components/FolderPanel.tsx
-- public/scoutcore-logo.svg
-- public/favicon.svg
-
-## Komutlar
-
-```bash
-npm install
-npm run build
-npm run dev
-```
-
-## Not
-
-Bu sürüm canlı yayına çıkmak için doğrulanmış statik başlangıç sürümüdür. Veritabanı, gerçek login, oyuncu CRUD ve rapor sistemi sonraki sprintlerde eklenecektir.
+GitHub'a ZIP içindeki dosya ve klasörleri kök dizine yükleyin.

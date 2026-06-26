@@ -1,11 +1,1 @@
-<svg width="560" height="180" viewBox="0 0 560 180" fill="none" xmlns="http://www.w3.org/2000/svg">
-<rect width="560" height="180" rx="28" fill="#05070B"/>
-<text x="70" y="78" font-family="Arial, sans-serif" font-size="64" font-weight="900" fill="#F8FAFC">SC</text>
-<circle cx="185" cy="58" r="22" stroke="#84CC16" stroke-width="5"/>
-<circle cx="185" cy="58" r="6" fill="#84CC16"/>
-<line x1="185" y1="30" x2="185" y2="86" stroke="#84CC16" stroke-width="3"/>
-<line x1="157" y1="58" x2="213" y2="58" stroke="#84CC16" stroke-width="3"/>
-<text x="70" y="128" font-family="Arial, sans-serif" font-size="34" font-weight="800" letter-spacing="8" fill="#F8FAFC">SCOUT</text>
-<text x="294" y="128" font-family="Arial, sans-serif" font-size="34" font-weight="800" letter-spacing="8" fill="#84CC16">CORE</text>
-<text x="72" y="154" font-family="Arial, sans-serif" font-size="12" font-weight="700" letter-spacing="5" fill="#94A3B8">BY ONUR BAŞ</text>
-</svg>
+<svg width="720" height="220" viewBox="0 0 720 220" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="720" height="220" rx="34" fill="#05070B"/><path d="M93 64H178L160 84H101C88 84 78 94 78 106C78 118 88 128 101 128H151C176 128 196 148 196 173C196 198 176 218 151 218H54L73 198H151C164 198 174 188 174 176C174 163 164 153 151 153H101C76 153 56 133 56 108C56 84 69 64 93 64Z" fill="url(#g1)"/><path d="M328 64H270C231 64 199 96 199 135C199 174 231 206 270 206H328L350 184H270C243 184 221 162 221 135C221 108 243 86 270 86H350L328 64Z" fill="url(#g2)"/><circle cx="293" cy="135" r="34" stroke="#84CC16" stroke-width="8"/><circle cx="293" cy="135" r="8" fill="#84CC16"/><path d="M293 91V112M293 158V179M249 135H270M316 135H337" stroke="#84CC16" stroke-width="5" stroke-linecap="round"/><text x="390" y="120" fill="#F8FAFC" font-family="Arial, sans-serif" font-size="48" font-weight="900" letter-spacing="3">SCOUT</text><text x="390" y="172" fill="#84CC16" font-family="Arial, sans-serif" font-size="48" font-weight="900" letter-spacing="3">CORE</text><text x="392" y="198" fill="#94A3B8" font-family="Arial, sans-serif" font-size="13" font-weight="700" letter-spacing="6">BY ONUR BAŞ</text><defs><linearGradient id="g1" x1="56" y1="64" x2="196" y2="218"><stop stop-color="#F8FAFC"/><stop offset="1" stop-color="#64748B"/></linearGradient><linearGradient id="g2" x1="199" y1="64" x2="350" y2="206"><stop stop-color="#F8FAFC"/><stop offset="1" stop-color="#64748B"/></linearGradient></defs></svg>

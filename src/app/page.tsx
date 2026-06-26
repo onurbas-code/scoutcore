@@ -1,46 +1,46 @@
-import Sidebar from "@/components/Sidebar";
-import MetricCard from "@/components/MetricCard";
-import PlayerTable from "@/components/PlayerTable";
-import FolderPanel from "@/components/FolderPanel";
+"use client";
+import { useMemo, useState } from "react";
 
-export default function HomePage() {
-  return (
-    <div className="appShell">
-      <Sidebar />
+type Player = { id:number; name:string; age:number; position:string; club:string; nationality:string; foot:string; height:string; contract:string; matches:number; minutes:number; goals:number; assists:number; score:number; status:string; folder:string; salary:string; value:string; report:string; strengths:string; development:string; video:string };
 
-      <main className="main">
-        <header className="topbar">
-          <div>
-            <h1>Dashboard</h1>
-            <p>Football Intelligence Platform</p>
-          </div>
-          <div className="userBox">Onur Baş · Proje Sahibi</div>
-        </header>
+const initialPlayers: Player[] = [
+{id:1,name:"Marko Petrovic",age:23,position:"Forvet",club:"FK Novi",nationality:"Sırbistan",foot:"Sağ",height:"1.86",contract:"2027",matches:31,minutes:2410,goals:14,assists:5,score:84,status:"A Hedef",folder:"Acil Transfer",salary:"18K €/ay",value:"650K €",report:"Ceza sahası koşuları güçlü, ilk temas kalitesi iyi. 1. Lig temposuna uygun. Savunma arkası koşuları ve bitiricilik ana transfer gerekçesi.",strengths:"Bitiricilik, koşu zamanlaması, pres iştahı",development:"Sırtı dönük oyun ve dar alanda pas kalitesi",video:"https://youtube.com"},
+{id:2,name:"Ali Can",age:22,position:"Orta Saha",club:"Anadolu FK",nationality:"Türkiye",foot:"Sağ",height:"1.78",contract:"2026",matches:34,minutes:2880,goals:4,assists:9,score:79,status:"B Hedef",folder:"Gelecek Sezon",salary:"320K ₺/ay",value:"400K €",report:"Topla çıkış ve üçüncü bölge bağlantılarında değerli. Oyun görüşü iyi; fiziksel temas kalitesi geliştirilmeli.",strengths:"Pas açısı, oyun görüşü, duran top",development:"İkili mücadele, savunma geçişi",video:"https://youtube.com"},
+{id:3,name:"Uğurcan Kaya",age:25,position:"Kaleci",club:"Anadolu FK",nationality:"Türkiye",foot:"Sağ",height:"1.91",contract:"2028",matches:32,minutes:2880,goals:0,assists:0,score:81,status:"A Hedef",folder:"Acil Transfer",salary:"420K ₺/ay",value:"550K €",report:"Çizgi reaksiyonları ve yan top kararları iyi. Ayakla oyun seviyesi orta üstü. Liderlik profili olumlu.",strengths:"Refleks, yan top, iletişim",development:"Uzun pas isabeti",video:"https://youtube.com"},
+{id:4,name:"Lucas Ferreira",age:24,position:"Kanat",club:"Club Brasil",nationality:"Brezilya",foot:"Sol",height:"1.75",contract:"2026",matches:29,minutes:2110,goals:7,assists:8,score:76,status:"Takip",folder:"Kiralık",salary:"22K €/ay",value:"700K €",report:"1v1 tehdit seviyesi yüksek. Top kaybı sonrası reaksiyon geliştirilmeli. Finansal şartlar uygun olursa takipte kalmalı.",strengths:"Dripling, hızlanma, içe kat",development:"Savunma disiplini",video:"https://youtube.com"}
+];
 
-        <section className="hero">
-          <div>
-            <small>SCOUTCORE COMMAND CENTER</small>
-            <h2>Çorum FK Scouting Operasyon Merkezi</h2>
-            <p>
-              Oyuncu klasörleri, scout raporları, transfer kararları ve yönetici
-              özetlerini tek merkezden yöneten profesyonel futbol istihbarat
-              platformu.
-            </p>
-          </div>
-        </section>
+const navItems = ["Dashboard","Oyuncu Veri Merkezi","Pozisyon Klasörleri","Transfer Pipeline","KPI & Grafikler","Video Analiz","Yönetim Kurulu","AI Scout","Ayarlar"];
+const positions = ["Kaleci","Stoper","Sol Bek","Sağ Bek","Orta Saha","Kanat","Forvet"];
+const pipeline = ["İzlenecek","İzleniyor","Raporlandı","Komite","Teklif","Transfer"];
 
-        <section className="metrics">
-          <MetricCard title="Toplam Oyuncu" value="124" detail="Canlı havuz" />
-          <MetricCard title="A Hedef" value="12" detail="Komite adayı" />
-          <MetricCard title="Ortalama Skor" value="78" detail="Karar motoru" />
-          <MetricCard title="Acil Transfer" value="8" detail="Öncelikli" />
-        </section>
-
-        <section className="contentGrid">
-          <PlayerTable />
-          <FolderPanel />
-        </section>
-      </main>
-    </div>
-  );
+export default function HomePage(){
+ const [active,setActive]=useState("Dashboard");
+ const [players,setPlayers]=useState<Player[]>(initialPlayers);
+ const [selected,setSelected]=useState<Player|null>(initialPlayers[0]);
+ const [positionFilter,setPositionFilter]=useState("Tümü");
+ const [query,setQuery]=useState("");
+ const [formOpen,setFormOpen]=useState(false);
+ const [newPlayer,setNewPlayer]=useState({name:"",position:"Stoper",club:"",age:"23"});
+ const filteredPlayers=useMemo(()=>players.filter(p=>(positionFilter==="Tümü"||p.position===positionFilter)&&(p.name.toLowerCase().includes(query.toLowerCase())||p.club.toLowerCase().includes(query.toLowerCase())||p.position.toLowerCase().includes(query.toLowerCase()))),[players,positionFilter,query]);
+ const addPlayer=()=>{ if(!newPlayer.name.trim())return; const p:Player={id:Date.now(),name:newPlayer.name,age:Number(newPlayer.age)||23,position:newPlayer.position,club:newPlayer.club||"Kulüp Girilmedi",nationality:"Belirlenecek",foot:"Sağ",height:"1.82",contract:"2027",matches:0,minutes:0,goals:0,assists:0,score:70,status:"Takip",folder:"İzlenecek",salary:"-",value:"-",report:"Yeni oyuncu kaydı. İlk scout raporu eklenecek.",strengths:"Belirlenecek",development:"Belirlenecek",video:""}; setPlayers([p,...players]); setSelected(p); setFormOpen(false); setNewPlayer({name:"",position:"Stoper",club:"",age:"23"}); };
+ const deletePlayer=(id:number)=>{const next=players.filter(p=>p.id!==id); setPlayers(next); setSelected(next[0]||null)};
+ const updateReport=(value:string)=>{ if(!selected)return; const next=players.map(p=>p.id===selected.id?{...p,report:value}:p); setPlayers(next); setSelected({...selected,report:value}); };
+ return <div className="shell"><aside className="sidebar"><div className="logoBlock"><img src="/scoutcore-logo.svg" alt="ScoutCore"/></div><nav>{navItems.map(item=><button key={item} onClick={()=>setActive(item)} className={active===item?"nav active":"nav"}>{item}</button>)}</nav><div className="sideFooter"><b>ScoutCore v2</b><span>Football Intelligence OS</span></div></aside><main className="main"><header className="topbar"><div><p className="eyebrow">FOOTBALL INTELLIGENCE PLATFORM</p><h1>{active}</h1></div><div className="topActions"><button className="ghost">Bildirimler</button><button className="profile">Onur Baş · Proje Sahibi</button></div></header>
+ {active==="Dashboard"&&<><section className="hero"><div><span>SCOUTCORE COMMAND CENTER</span><h2>Profesyonel Scouting Operasyon Merkezi</h2><p>Oyuncu izleme, raporlama, transfer kararları, KPI takibi ve yönetim kurulu sunumlarını tek merkezde toplayan kulüp içi futbol istihbarat sistemi.</p></div><div className="heroBadge"><b>{players.length}</b><small>Aktif Oyuncu</small></div></section><section className="metrics"><Metric title="Toplam Oyuncu" value={players.length.toString()} note="Canlı havuz"/><Metric title="A Hedef" value={players.filter(p=>p.status==="A Hedef").length.toString()} note="Komite adayı"/><Metric title="Ortalama Skor" value={Math.round(players.reduce((a,b)=>a+b.score,0)/players.length).toString()} note="AI karar skoru"/><Metric title="Acil Transfer" value={players.filter(p=>p.folder==="Acil Transfer").length.toString()} note="Öncelikli"/></section><section className="grid two"><PlayerList players={filteredPlayers.slice(0,4)} onSelect={setSelected} selected={selected}/><WorldPanel/></section></>}
+ {active==="Oyuncu Veri Merkezi"&&<section className="grid twoWide"><div className="panel"><div className="panelHeader"><div><h3>Oyuncu Veri Merkezi</h3><p>Oyuncu ekle, sil, filtrele ve adına tıklayarak tam profil raporunu aç.</p></div><button className="primary" onClick={()=>setFormOpen(!formOpen)}>+ Oyuncu Ekle</button></div>{formOpen&&<div className="addForm"><input placeholder="Oyuncu adı" value={newPlayer.name} onChange={e=>setNewPlayer({...newPlayer,name:e.target.value})}/><select value={newPlayer.position} onChange={e=>setNewPlayer({...newPlayer,position:e.target.value})}>{positions.map(p=><option key={p}>{p}</option>)}</select><input placeholder="Kulüp" value={newPlayer.club} onChange={e=>setNewPlayer({...newPlayer,club:e.target.value})}/><input placeholder="Yaş" value={newPlayer.age} onChange={e=>setNewPlayer({...newPlayer,age:e.target.value})}/><button className="primary" onClick={addPlayer}>Kaydet</button></div>}<div className="toolbar"><input placeholder="Oyuncu / kulüp / mevki ara..." value={query} onChange={e=>setQuery(e.target.value)}/><select value={positionFilter} onChange={e=>setPositionFilter(e.target.value)}><option>Tümü</option>{positions.map(p=><option key={p}>{p}</option>)}</select></div><PlayerList players={filteredPlayers} onSelect={setSelected} selected={selected} onDelete={deletePlayer}/></div><PlayerProfile selected={selected} updateReport={updateReport}/></section>}
+ {active==="Pozisyon Klasörleri"&&<section className="panel"><h3>Pozisyon Klasörleri</h3><p>Her pozisyon altında Acil Transfer, Bu Sezon, Gelecek Sezon, Kiralık, Serbest ve Takip klasörleri.</p><div className="positionGrid">{positions.map(pos=><button className="positionCard" key={pos} onClick={()=>{setActive("Oyuncu Veri Merkezi");setPositionFilter(pos)}}><span>{pos}</span><b>{players.filter(p=>p.position===pos).length}</b><small>Acil · Gelecek Sezon · Takip · Kiralık</small></button>)}</div></section>}
+ {active==="Transfer Pipeline"&&<section className="pipeline">{pipeline.map((stage,idx)=><div className="pipeCol" key={stage}><div className="pipeHead"><b>{stage}</b><span>{idx+2}</span></div>{players.slice(0,3).map((p,i)=><button key={`${stage}-${p.id}`} className="pipeCard" onClick={()=>{setSelected(p);setActive("Oyuncu Veri Merkezi")}}><b>{p.name}</b><span>{p.position} · {p.club}</span><em>{Math.max(60,p.score-idx-i)} Skor</em></button>)}</div>)}</section>}
+ {active==="KPI & Grafikler"&&<section className="grid two"><div className="panel"><h3>KPI Dashboard</h3><div className="barList"><Bar label="Rapor Tamamlama" value={82}/><Bar label="A Hedef Dönüşüm" value={41}/><Bar label="Scout Aktivitesi" value={76}/><Bar label="Transfer ROI" value={64}/></div></div><div className="panel"><h3>Scout Performans Ligi</h3>{["Scout A","Scout B","Scout C","Scout D"].map((s,i)=><div className="rank" key={s}><b>{i+1}. {s}</b><span>{92-i*7} puan</span></div>)}</div></section>}
+ {active==="Video Analiz"&&<section className="panel"><h3>Video Analiz Merkezi</h3><p>Wyscout, Hudl, InStat veya YouTube linkleri oyuncu profillerine bağlanacak.</p><div className="videoBox"><div className="play">▶</div><div><b>Oyuncu video havuzu</b><span>Maç kesitleri, aksiyon klipleri ve rapor linkleri tutulacak.</span></div></div></section>}
+ {active==="Yönetim Kurulu"&&<section className="grid two"><div className="panel board"><h3>Yönetim Kurulu Sunum Dashboard’u</h3><p>A hedef oyuncular, maliyet analizi, risk seviyesi ve scout kanaati tek ekranda özetlenir.</p><button className="primary">PDF Rapor Oluştur</button><button className="ghost">PowerPoint Hazırla</button></div><div className="panel"><h3>Transfer Komitesi Özeti</h3><PlayerList players={players.filter(p=>p.status==="A Hedef")} onSelect={setSelected} selected={selected}/></div></section>}
+ {active==="AI Scout"&&<section className="panel aiPanel"><h3>AI Scout Asistanı</h3><p>Doğal dil ile oyuncu arama simülasyonu.</p><div className="prompt">24 yaş altı, sağ ayaklı, 30 maç üstü oynayan, 800 bin € altı stoperleri listele.</div><div className="aiResult">Sonuç: Bu modül veritabanı bağlandığında otomatik filtreleme ve öneri üretecek.</div></section>}
+ {active==="Ayarlar"&&<section className="panel"><h3>Ayarlar</h3><div className="settings"><div><b>Marka</b><span>ScoutCore · by Onur Baş</span></div><div><b>Tema</b><span>Premium dark / lime intelligence</span></div><div><b>Sonraki Sprint</b><span>Veritabanı, gerçek login ve kalıcı oyuncu kayıtları</span></div></div></section>}
+ </main></div>;
 }
+function Metric({title,value,note}:{title:string;value:string;note:string}){return <div className="metric"><span>{title}</span><b>{value}</b><em>{note}</em></div>}
+function PlayerList({players,onSelect,selected,onDelete}:{players:Player[];onSelect:(p:Player)=>void;selected:Player|null;onDelete?:(id:number)=>void}){return <div className="playerList">{players.map(p=><div key={p.id} className={selected?.id===p.id?"playerRow selected":"playerRow"}><button onClick={()=>onSelect(p)}><div className="avatar">{p.name.split(" ").map(x=>x[0]).slice(0,2).join("")}</div><div><b>{p.name}</b><span>{p.position} · {p.club} · {p.age} yaş</span></div></button><div className="score">{p.score}</div><span className="pill">{p.status}</span>{onDelete&&<button className="delete" onClick={()=>onDelete(p.id)}>Sil</button>}</div>)}</div>}
+function PlayerProfile({selected,updateReport}:{selected:Player|null;updateReport:(value:string)=>void}){if(!selected)return <div className="panel">Oyuncu seçilmedi.</div>; return <div className="panel profilePanel"><div className="profileTop"><div className="photo">{selected.name.split(" ").map(x=>x[0]).slice(0,2).join("")}</div><div><h3>{selected.name}</h3><p>{selected.position} · {selected.club} · {selected.nationality}</p><span className="pill">{selected.status}</span></div></div><div className="profileStats"><Info label="Yaş" value={selected.age.toString()}/><Info label="Boy" value={selected.height}/><Info label="Ayak" value={selected.foot}/><Info label="Sözleşme" value={selected.contract}/><Info label="Maç" value={selected.matches.toString()}/><Info label="Dakika" value={selected.minutes.toString()}/><Info label="Gol" value={selected.goals.toString()}/><Info label="Asist" value={selected.assists.toString()}/><Info label="Maaş" value={selected.salary}/><Info label="Değer" value={selected.value}/></div><div className="radar"><div style={{"--v": `${selected.score}%`} as React.CSSProperties}></div><span>ScoutCore Skoru</span><b>{selected.score}/100</b></div><div className="reportBox"><label>Scout Raporu</label><textarea value={selected.report} onChange={e=>updateReport(e.target.value)}/></div><div className="reportGrid"><div><b>Güçlü Yönler</b><span>{selected.strengths}</span></div><div><b>Gelişim Alanları</b><span>{selected.development}</span></div></div></div>}
+function Info({label,value}:{label:string;value:string}){return <div className="info"><span>{label}</span><b>{value}</b></div>}
+function WorldPanel(){return <div className="panel mapPanel"><h3>Bölgesel Scout Ağı</h3><p>Balkanlar · Afrika · İskandinavya · Güney Amerika</p><div className="mapDots"><span className="d1"></span><span className="d2"></span><span className="d3"></span><span className="d4"></span><span className="d5"></span></div><div className="regionList"><div><b>Balkanlar</b><span>18 oyuncu</span></div><div><b>Afrika</b><span>11 oyuncu</span></div><div><b>İskandinavya</b><span>7 oyuncu</span></div><div><b>G. Amerika</b><span>14 oyuncu</span></div></div></div>}
+function Bar({label,value}:{label:string;value:number}){return <div className="bar"><div><span>{label}</span><b>{value}%</b></div><i><em style={{width:`${value}%`}}></em></i></div>}

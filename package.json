@@ -1,12 +1,11 @@
 {
-  "name": "scoutcore-complete-project",
-  "version": "1.0.0",
+  "name": "scoutcore-v2-premium",
+  "version": "2.0.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start",
-    "lint": "next lint"
+    "start": "next start"
   },
   "dependencies": {
     "next": "14.2.5",
