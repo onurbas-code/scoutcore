@@ -1,0 +1,53 @@
+BUILD OK
+
+
+added 28 packages, and audited 29 packages in 16s
+
+3 packages are looking for funding
+  run `npm fund` for details
+
+2 vulnerabilities (1 moderate, 1 critical)
+
+To address all issues, run:
+  npm audit fix --force
+
+Run `npm audit` for details.
+
+npm warn deprecated next@14.2.5: This version has a security vulnerability. Please upgrade to a patched version. See https://nextjs.org/blog/security-update-2025-12-11 for more details.
+
+
+> scoutcore-complete-project@1.0.0 build
+> next build
+
+[33m[1m⚠[22m[39m No build cache found. Please configure build caching for faster rebuilds. Read more: https://nextjs.org/docs/messages/no-cache
+[35m[1mAttention[22m[39m: Next.js now collects completely anonymous telemetry regarding usage.
+This information is used to shape Next.js' roadmap and prioritize features.
+You can learn more, including how to opt-out if you'd not like to participate in this anonymous program, by visiting the following URL:
+[36mhttps://nextjs.org/telemetry[39m
+
+  [1m[38;2;173;127;168m▲ Next.js 14.2.5[39m[22m
+
+ [37m[1m [22m[39m Creating an optimized production build ...
+ [32m[1m✓[22m[39m Compiled successfully
+ [37m[1m [22m[39m Linting and checking validity of types ...
+ [37m[1m [22m[39m Collecting page data ...
+ [37m[1m [22m[39m Generating static pages (0/4) ...
+ [37m[1m [22m[39m Generating static pages (1/4) 
+ [37m[1m [22m[39m Generating static pages (2/4) 
+ [37m[1m [22m[39m Generating static pages (3/4) 
+ [32m[1m✓[22m[39m Generating static pages (4/4)
+ [37m[1m [22m[39m Finalizing page optimization ...
+ [37m[1m [22m[39m Collecting build traces ...
+
+[4mRoute (app)[24m                              [4mSize[24m     [4mFirst Load JS[24m
+┌ ○ /                                    137 B          [37m[1m87.2 kB[22m[39m
+└ ○ /_not-found                          871 B          [37m[1m87.9 kB[22m[39m
++ First Load JS shared by all            [37m[1m87 kB[22m[39m
+  ├ chunks/23-b75664ace61c0abb.js        31.5 kB
+  ├ chunks/fd9d1056-2821b0f0cabcd8bd.js  53.6 kB
+  └ other shared chunks (total)          1.86 kB
+
+
+○  (Static)  prerendered as static content
+
+
