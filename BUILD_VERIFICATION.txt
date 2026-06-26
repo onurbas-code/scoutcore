@@ -1,14 +1,8 @@
 BUILD OK
 
 
-> scoutcore-v2-premium@2.0.0 build
+> scoutcore-enterprise-v3@3.0.0 build
 > next build
-
-[33m[1m⚠[22m[39m No build cache found. Please configure build caching for faster rebuilds. Read more: https://nextjs.org/docs/messages/no-cache
-[35m[1mAttention[22m[39m: Next.js now collects completely anonymous telemetry regarding usage.
-This information is used to shape Next.js' roadmap and prioritize features.
-You can learn more, including how to opt-out if you'd not like to participate in this anonymous program, by visiting the following URL:
-[36mhttps://nextjs.org/telemetry[39m
 
   [1m[38;2;173;127;168m▲ Next.js 14.2.5[39m[22m
 
@@ -25,7 +19,7 @@ You can learn more, including how to opt-out if you'd not like to participate in
  [37m[1m [22m[39m Collecting build traces ...
 
 [4mRoute (app)[24m                              [4mSize[24m     [4mFirst Load JS[24m
-┌ ○ /                                    4.64 kB        [37m[1m91.7 kB[22m[39m
+┌ ○ /                                    5.16 kB        [37m[1m92.2 kB[22m[39m
 └ ○ /_not-found                          871 B          [37m[1m87.9 kB[22m[39m
 + First Load JS shared by all            [37m[1m87 kB[22m[39m
   ├ chunks/23-16daa0c0d5d9a55a.js        31.5 kB
