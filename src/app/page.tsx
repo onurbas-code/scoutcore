@@ -1,210 +1,56 @@
 "use client";
+import {useMemo,useState} from "react";
 
-import { useMemo, useState } from "react";
+type Player={id:number;name:string;age:number;position:string;club:string;country:string;foot:string;height:string;contract:string;matches:number;goals:number;assists:number;minutes:number;value:string;salary:string;score:number;potential:number;folder:string;status:string;photo:string;report:string;strengths:string;weaknesses:string;action:string;video:string;externalLink:string};
+type Scout={id:number;name:string;region:string;role:string;reports:number};
 
-type Role = "Head of Scouting" | "Scout" | "Technical Director" | "Board";
-type Player = {
-  id: number; name: string; age: number; position: string; club: string; nationality: string; foot: string; height: string;
-  contract: string; matches: number; minutes: number; goals: number; assists: number; score: number; status: string; folder: string;
-  salary: string; value: string; photo: string; report: string; strengths: string; weaknesses: string; action: string;
-  wyscout: string; instat: string; youtube: string; injuryRisk: number; roi: number;
-};
+const positions=["Kaleci","Stoper","Sağ Bek","Sol Bek","Ön Libero","8 Numara","10 Numara","Sağ Kanat","Sol Kanat","Forvet"];
+const folders=["Acil Transfer","Bu Sezon","Gelecek Sezon","Gelişim","Kiralık","Serbest","Sözleşmesi Bitecek","Takip"];
+const tabs=["Home","Players","Scouting","Reports","Video Center","Transfer Center","Analytics","AI Module","Settings"];
+const seed:Player[]=[
+{id:1,name:"Marko Petrovic",age:23,position:"Forvet",club:"FK Novi",country:"Sırbistan",foot:"Sağ",height:"1.86",contract:"2027",matches:31,goals:14,assists:5,minutes:2410,value:"650K €",salary:"18K €/ay",score:84,potential:87,folder:"Acil Transfer",status:"A Hedef",photo:"",report:"Ceza sahası koşuları güçlü. İlk temas kalitesi iyi. Transfer komitesi için uygun aday.",strengths:"Bitiricilik, koşu zamanlaması, pres",weaknesses:"Sırtı dönük oyun",action:"Komiteye sun",video:"https://youtube.com",externalLink:""},
+{id:2,name:"Ali Can",age:22,position:"Orta Saha",club:"Anadolu FK",country:"Türkiye",foot:"Sağ",height:"1.78",contract:"2026",matches:34,goals:4,assists:9,minutes:2880,value:"400K €",salary:"320K ₺/ay",score:79,potential:84,folder:"Gelecek Sezon",status:"B Hedef",photo:"",report:"Topla çıkış ve bağlantı oyununda değerli. Fiziksel temas seviyesi izlenmeli.",strengths:"Pas açısı, oyun görüşü, duran top",weaknesses:"Savunma geçişi",action:"2 maç daha izle",video:"",externalLink:""},
+{id:3,name:"Uğurcan Kaya",age:25,position:"Kaleci",club:"Anadolu FK",country:"Türkiye",foot:"Sağ",height:"1.91",contract:"2028",matches:32,goals:0,assists:0,minutes:2880,value:"550K €",salary:"420K ₺/ay",score:81,potential:83,folder:"Acil Transfer",status:"A Hedef",photo:"",report:"Refleks, yan top ve iletişim seviyesi iyi. Ayakla oyun gelişebilir.",strengths:"Refleks, yan top, iletişim",weaknesses:"Uzun pas isabeti",action:"Canlı izleme planla",video:"",externalLink:""}];
+const scoutSeed:Scout[]=[{id:1,name:"Scout A",region:"Balkanlar",role:"Senior Scout",reports:18},{id:2,name:"Scout B",region:"Türkiye",role:"Area Scout",reports:12},{id:3,name:"Scout C",region:"Afrika",role:"Video Scout",reports:9}];
+const blank:Player={id:0,name:"",age:23,position:"Stoper",club:"",country:"",foot:"Sağ",height:"1.85",contract:"2027",matches:0,goals:0,assists:0,minutes:0,value:"",salary:"",score:70,potential:75,folder:"Takip",status:"Takip",photo:"",report:"",strengths:"",weaknesses:"",action:"",video:"",externalLink:""};
 
-const basePlayers: Player[] = [
-  { id: 1, name: "Marko Petrovic", age: 23, position: "Forvet", club: "FK Novi", nationality: "Sırbistan", foot: "Sağ", height: "1.86", contract: "2027", matches: 31, minutes: 2410, goals: 14, assists: 5, score: 84, status: "A Hedef", folder: "Acil Transfer", salary: "18K €/ay", value: "650K €", photo: "", report: "Ceza sahası koşuları güçlü. 1. Lig temposuna uygun. Bitiricilik ve pres iştahı transfer gerekçesi.", strengths: "Bitiricilik, koşu zamanlaması, pres", weaknesses: "Sırtı dönük oyun", action: "Transfer komitesine sun", wyscout: "https://wyscout.com", instat: "https://instatsport.com", youtube: "https://youtube.com", injuryRisk: 18, roi: 72 },
-  { id: 2, name: "Ali Can", age: 22, position: "Orta Saha", club: "Anadolu FK", nationality: "Türkiye", foot: "Sağ", height: "1.78", contract: "2026", matches: 34, minutes: 2880, goals: 4, assists: 9, score: 79, status: "B Hedef", folder: "Gelecek Sezon", salary: "320K ₺/ay", value: "400K €", photo: "", report: "Topla çıkış ve bağlantı oyununda değerli. Teknik direktör oyun modeline uyumlu.", strengths: "Pas açısı, oyun görüşü", weaknesses: "Fiziksel temas", action: "2 maç daha izle", wyscout: "", instat: "", youtube: "https://youtube.com", injuryRisk: 22, roi: 66 },
-  { id: 3, name: "Uğurcan Kaya", age: 25, position: "Kaleci", club: "Anadolu FK", nationality: "Türkiye", foot: "Sağ", height: "1.91", contract: "2028", matches: 32, minutes: 2880, goals: 0, assists: 0, score: 81, status: "A Hedef", folder: "Acil Transfer", salary: "420K ₺/ay", value: "550K €", photo: "", report: "Refleks ve yan top kalitesi iyi. Liderlik profili olumlu.", strengths: "Refleks, yan top, iletişim", weaknesses: "Uzun pas isabeti", action: "Canlı izleme planla", wyscout: "", instat: "", youtube: "", injuryRisk: 12, roi: 70 },
-  { id: 4, name: "Lucas Ferreira", age: 24, position: "Kanat", club: "Club Brasil", nationality: "Brezilya", foot: "Sol", height: "1.75", contract: "2026", matches: 29, minutes: 2110, goals: 7, assists: 8, score: 76, status: "Takip", folder: "Kiralık", salary: "22K €/ay", value: "700K €", photo: "", report: "1v1 tehdit seviyesi yüksek. Top kaybı sonrası reaksiyon geliştirilmeli.", strengths: "Dripling, hız, içe kat", weaknesses: "Savunma disiplini", action: "Video analiz", wyscout: "", instat: "", youtube: "", injuryRisk: 28, roi: 58 },
-];
-
-const nav = ["Dashboard", "Oyuncular", "Pozisyon Klasörleri", "Transfer Komitesi", "KPI & Grafikler", "Video Merkezi", "Yönetim Kurulu", "AI Scout", "Supabase Planı", "Ayarlar"];
-const positions = ["Kaleci","Stoper","Sol Bek","Sağ Bek","Orta Saha","Kanat","Forvet"];
-const folders = ["Acil Transfer","Bu Sezon","Gelecek Sezon","Gelişim","Kiralık","Serbest","Sözleşmesi Bitecek","Takip"];
-
-export default function App() {
-  const [logged, setLogged] = useState(false);
-  const [role, setRole] = useState<Role>("Head of Scouting");
-  const [active, setActive] = useState("Dashboard");
-  const [players, setPlayers] = useState<Player[]>(basePlayers);
-  const [selected, setSelected] = useState<Player | null>(basePlayers[0]);
-  const [q, setQ] = useState("");
-  const [pos, setPos] = useState("Tümü");
-  const [edit, setEdit] = useState<Player | null>(null);
-
-  const filtered = useMemo(() => players.filter(p => 
-    (pos === "Tümü" || p.position === pos) &&
-    (p.name.toLowerCase().includes(q.toLowerCase()) || p.club.toLowerCase().includes(q.toLowerCase()) || p.position.toLowerCase().includes(q.toLowerCase()))
-  ), [players, q, pos]);
-
-  function upsertPlayer(p: Player) {
-    if (players.some(x => x.id === p.id)) setPlayers(players.map(x => x.id === p.id ? p : x));
-    else setPlayers([{ ...p, id: Date.now() }, ...players]);
-    setSelected(p); setEdit(null);
-  }
-
-  function removePlayer(id: number) {
-    const next = players.filter(p => p.id !== id);
-    setPlayers(next); setSelected(next[0] || null);
-  }
-
-  function exportCSV() {
-    const headers = ["name","age","position","club","contract","matches","goals","assists","minutes","score","status","folder"];
-    const rows = players.map(p => headers.map(h => String((p as any)[h]).replaceAll(",", " ")).join(","));
-    const csv = [headers.join(","), ...rows].join("\n");
-    const blob = new Blob([csv], { type: "text/csv;charset=utf-8" });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url; a.download = "scoutcore_players.csv"; a.click();
-    URL.revokeObjectURL(url);
-  }
-
-  function printPDF() { window.print(); }
-
-  if (!logged) return <Login role={role} setRole={setRole} setLogged={setLogged} />;
-
-  return (
-    <div className="shell">
-      <aside className="sidebar">
-        <div className="logoCard"><img src="/scoutcore-logo.svg" alt="ScoutCore"/></div>
-        <nav>{nav.map(n => <button key={n} onClick={() => setActive(n)} className={active === n ? "nav active" : "nav"}>{n}</button>)}</nav>
-        <div className="sideInfo"><b>{role}</b><span>Onur Baş · ScoutCore</span></div>
-      </aside>
-
-      <main className="main">
-        <header className="top">
-          <div><small>SCOUTCORE ENTERPRISE</small><h1>{active}</h1></div>
-          <div className="topButtons"><button onClick={exportCSV}>Excel/CSV Export</button><button onClick={printPDF}>PDF/Print</button><button onClick={() => setLogged(false)}>Çıkış</button></div>
-        </header>
-
-        {active === "Dashboard" && <Dashboard players={players} setActive={setActive} setSelected={setSelected} />}
-        {active === "Oyuncular" && <PlayersView players={filtered} all={players} q={q} setQ={setQ} pos={pos} setPos={setPos} selected={selected} setSelected={setSelected} removePlayer={removePlayer} edit={edit} setEdit={setEdit} upsertPlayer={upsertPlayer} />}
-        {active === "Pozisyon Klasörleri" && <Folders players={players} setActive={setActive} setPos={setPos} />}
-        {active === "Transfer Komitesi" && <Transfer players={players} setSelected={setSelected} setActive={setActive} />}
-        {active === "KPI & Grafikler" && <KPI players={players} />}
-        {active === "Video Merkezi" && <VideoCenter selected={selected} />}
-        {active === "Yönetim Kurulu" && <Board players={players} printPDF={printPDF} />}
-        {active === "AI Scout" && <AIScout players={players} />}
-        {active === "Supabase Planı" && <SupabasePlan />}
-        {active === "Ayarlar" && <Settings role={role} setRole={setRole} />}
-      </main>
-    </div>
-  );
+export default function App(){
+ const[logged,setLogged]=useState(false),[active,setActive]=useState("Home");
+ const[players,setPlayers]=useState<Player[]>(seed),[selected,setSelected]=useState<Player|null>(seed[0]);
+ const[scouts,setScouts]=useState<Scout[]>(scoutSeed),[q,setQ]=useState(""),[filter,setFilter]=useState("Tümü"),[editing,setEditing]=useState<Player|null>(null);
+ const[newScout,setNewScout]=useState({name:"",region:"",role:"Scout"});
+ const filtered=useMemo(()=>players.filter(p=>{const text=`${p.name} ${p.club} ${p.position} ${p.country}`.toLowerCase();return text.includes(q.toLowerCase())&&(filter==="Tümü"||p.position===filter||p.folder===filter||p.status===filter)}),[players,q,filter]);
+ function savePlayer(p:Player){const np={...p,id:p.id||Date.now()};setPlayers(players.some(x=>x.id===np.id)?players.map(x=>x.id===np.id?np:x):[np,...players]);setSelected(np);setEditing(null)}
+ function del(id:number){const n=players.filter(p=>p.id!==id);setPlayers(n);if(selected?.id===id)setSelected(n[0]||null)}
+ function update(p:Player){setSelected(p);setPlayers(players.map(x=>x.id===p.id?p:x))}
+ function addScout(){if(!newScout.name.trim())return;setScouts([{id:Date.now(),name:newScout.name,region:newScout.region||"Belirlenecek",role:newScout.role,reports:0},...scouts]);setNewScout({name:"",region:"",role:"Scout"})}
+ function exportCSV(){const h=["name","age","position","club","country","matches","goals","assists","minutes","score","potential","status","folder"];const csv=[h.join(","),...players.map(p=>h.map(k=>String((p as any)[k]).replaceAll(","," ")).join(","))].join("\n");const b=new Blob([csv],{type:"text/csv"});const a=document.createElement("a");a.href=URL.createObjectURL(b);a.download="scoutcore_players.csv";a.click()}
+ if(!logged)return <Login onLogin={()=>setLogged(true)}/>;
+ return <div className="app"><header className="topbar"><button className="brand" onClick={()=>setActive("Home")}><img src="/scoutcore-logo.jpeg" alt="ScoutCore"/></button><nav className="tabs">{tabs.map(t=><button key={t} onClick={()=>setActive(t)} className={active===t?"tab active":"tab"}>{t}</button>)}</nav><div className="profile">Onur Baş</div></header><main className="workspace">
+  {active==="Home"&&<Home setActive={setActive} players={players} scouts={scouts}/>}
+  {active==="Players"&&<Players players={filtered} selected={selected} q={q} setQ={setQ} filter={filter} setFilter={setFilter} setSelected={setSelected} setActive={setActive} setEditing={setEditing} del={del} exportCSV={exportCSV}/>}
+  {active==="Scouting"&&<Scouting players={players} scouts={scouts}/>}
+  {active==="Reports"&&<Reports selected={selected} update={update}/>}
+  {active==="Video Center"&&<VideoCenter selected={selected} update={update}/>}
+  {active==="Transfer Center"&&<Transfer players={players} scouts={scouts} setSelected={setSelected} setActive={setActive} newScout={newScout} setNewScout={setNewScout} addScout={addScout} removeScout={(id:number)=>setScouts(scouts.filter(s=>s.id!==id))}/>}
+  {active==="Analytics"&&<Analytics players={players} scouts={scouts}/>}
+  {active==="AI Module"&&<AI players={players}/>}
+  {active==="Settings"&&<Settings exportCSV={exportCSV}/>}
+ </main>{editing&&<Editor player={editing} onSave={savePlayer} onCancel={()=>setEditing(null)}/>}</div>
 }
-
-function Login({ role, setRole, setLogged }: { role: Role; setRole: (r: Role) => void; setLogged: (v: boolean) => void }) {
-  return <div className="login"><div className="loginBox"><img src="/scoutcore-logo.svg" /><h1>Giriş</h1><p>Kullanıcı adı ve şifre demo modundadır. Gerçek auth Supabase bağlantısında aktif edilir.</p><input defaultValue="onur.bas" /><input defaultValue="123456" type="password" /><select value={role} onChange={e => setRole(e.target.value as Role)}><option>Head of Scouting</option><option>Scout</option><option>Technical Director</option><option>Board</option></select><button onClick={() => setLogged(true)}>ScoutCore'a Gir</button></div></div>
-}
-
-function Dashboard({ players, setActive, setSelected }: any) {
-  const avg = Math.round(players.reduce((a: number,b: Player)=>a+b.score,0)/players.length);
-  return <><section className="hero"><div><span>FOOTBALL INTELLIGENCE OS</span><h2>Transfermarkt + Wyscout + CRM mantığında scouting işletim sistemi</h2><p>Oyuncu veri merkezi, raporlama, transfer komitesi, video bağlantıları, KPI ve yönetim kurulu karar ekranı tek platformda.</p></div><b>{avg}</b></section><section className="metrics"><Metric t="Toplam Oyuncu" v={players.length}/><Metric t="A Hedef" v={players.filter((p:Player)=>p.status==="A Hedef").length}/><Metric t="Ort. Skor" v={avg}/><Metric t="Acil Transfer" v={players.filter((p:Player)=>p.folder==="Acil Transfer").length}/></section><section className="grid2"><div className="panel"><h3>Son Oyuncular</h3><PlayerRows players={players} setSelected={setSelected} onOpen={()=>setActive("Oyuncular")} /></div><MapPanel /></section></>
-}
-
-function Metric({t,v}:{t:string;v:any}){return <div className="metric"><span>{t}</span><b>{v}</b><em>Canlı takip</em></div>}
-
-function PlayersView(props: any) {
-  const blank: Player = { id: 0, name:"", age:23, position:"Stoper", club:"", nationality:"", foot:"Sağ", height:"1.85", contract:"2027", matches:0, minutes:0, goals:0, assists:0, score:70, status:"Takip", folder:"Takip", salary:"", value:"", photo:"", report:"", strengths:"", weaknesses:"", action:"", wyscout:"", instat:"", youtube:"", injuryRisk:20, roi:60 };
-  return <section className="gridProfile"><div className="panel"><div className="panelHead"><h3>Oyuncu Veri Merkezi</h3><button onClick={()=>props.setEdit(blank)}>+ Oyuncu Ekle</button></div><div className="toolbar"><input placeholder="Oyuncu, kulüp, mevki ara" value={props.q} onChange={(e)=>props.setQ(e.target.value)} /><select value={props.pos} onChange={e=>props.setPos(e.target.value)}><option>Tümü</option>{positions.map(p=><option key={p}>{p}</option>)}</select></div>{props.edit && <PlayerForm p={props.edit} save={props.upsertPlayer} cancel={()=>props.setEdit(null)} />}<PlayerRows players={props.players} setSelected={props.setSelected} onDelete={props.removePlayer} onEdit={props.setEdit}/></div><Profile p={props.selected} update={(p:Player)=>props.upsertPlayer(p)} /></section>
-}
-
-function PlayerForm({p, save, cancel}:{p:Player; save:(p:Player)=>void; cancel:()=>void}) {
-  const [f,setF]=useState<Player>(p);
-  function u(k:keyof Player,v:any){setF({...f,[k]:v})}
-  return <div className="form"><input placeholder="Ad" value={f.name} onChange={e=>u("name",e.target.value)}/><select value={f.position} onChange={e=>u("position",e.target.value)}>{positions.map(x=><option key={x}>{x}</option>)}</select><input placeholder="Kulüp" value={f.club} onChange={e=>u("club",e.target.value)}/><input placeholder="Fotoğraf URL" value={f.photo} onChange={e=>u("photo",e.target.value)}/><input placeholder="Wyscout" value={f.wyscout} onChange={e=>u("wyscout",e.target.value)}/><input placeholder="InStat" value={f.instat} onChange={e=>u("instat",e.target.value)}/><button onClick={()=>save(f)}>Kaydet</button><button onClick={cancel}>İptal</button></div>
-}
-
-function PlayerRows({players,setSelected,onOpen,onDelete,onEdit}: any) {
-  return <div className="rows">{players.map((p:Player)=><div className="row" key={p.id}><button onClick={()=>{setSelected(p); onOpen && onOpen();}}><div className="avatar">{p.photo ? <img src={p.photo}/> : p.name.split(" ").map(x=>x[0]).slice(0,2).join("")}</div><div><b>{p.name}</b><span>{p.position} · {p.club} · {p.age} yaş</span></div></button><strong>{p.score}</strong><i>{p.status}</i>{onEdit&&<button onClick={()=>onEdit(p)}>Düzenle</button>}{onDelete&&<button className="danger" onClick={()=>onDelete(p.id)}>Sil</button>}</div>)}</div>
-}
-
-function Profile({p, update}:{p:Player|null; update:(p:Player)=>void}) {
-  if (!p) return <div className="panel">Oyuncu seçilmedi.</div>;
-
-  function u(k: keyof Player, v: any) {
-    const nextPlayer: Player = { ...(p as Player), [k]: v } as Player;
-    update(nextPlayer);
-  }
-
-  const infoItems = [
-    ["Yaş", p.age],
-    ["Boy", p.height],
-    ["Ayak", p.foot],
-    ["Sözleşme", p.contract],
-    ["Maç", p.matches],
-    ["Dakika", p.minutes],
-    ["Gol", p.goals],
-    ["Asist", p.assists],
-    ["Maaş", p.salary],
-    ["Değer", p.value],
-  ];
-
-  return (
-    <div className="panel profile">
-      <div className="profileTop">
-        <div className="bigPhoto">
-          {p.photo ? <img src={p.photo} alt={p.name} /> : p.name.split(" ").map(x => x[0]).slice(0,2).join("")}
-        </div>
-        <div>
-          <h3>{p.name}</h3>
-          <p>{p.position} · {p.club} · {p.nationality}</p>
-          <i>{p.status}</i>
-        </div>
-      </div>
-
-      <div className="infoGrid">
-        {infoItems.map(([label, value]) => (
-          <div key={String(label)}>
-            <span>{label}</span>
-            <b>{String(value)}</b>
-          </div>
-        ))}
-      </div>
-
-      <div className="scoreRing">
-        <b>{p.score}</b>
-        <span>ScoutCore Skoru</span>
-      </div>
-
-      <label>Scout Raporu</label>
-      <textarea value={p.report} onChange={e => u("report", e.target.value)} />
-
-      <label>Güçlü Yönler</label>
-      <input value={p.strengths} onChange={e => u("strengths", e.target.value)} />
-
-      <label>Gelişim Alanları</label>
-      <input value={p.weaknesses} onChange={e => u("weaknesses", e.target.value)} />
-
-      <label>Önerilen Aksiyon</label>
-      <input value={p.action} onChange={e => u("action", e.target.value)} />
-    </div>
-  );
-}
-
-function Folders({players,setActive,setPos}: any){return <section className="panel"><h3>Pozisyon Klasörleri</h3><div className="folderGrid">{positions.map(pos=><button key={pos} onClick={()=>{setPos(pos);setActive("Oyuncular")}}><b>{pos}</b><strong>{players.filter((p:Player)=>p.position===pos).length}</strong><span>{folders.join(" · ")}</span></button>)}</div></section>}
-function Transfer({players,setSelected,setActive}:any){const stages=["İzlenecek","İzleniyor","Raporlandı","Komite","Teklif","Transfer"];return <section className="pipe">{stages.map((s,i)=><div key={s}><h3>{s}</h3>{players.slice(0,3).map((p:Player)=><button key={p.id+s} onClick={()=>{setSelected(p);setActive("Oyuncular")}}><b>{p.name}</b><span>{p.position}</span><em>{Math.max(55,p.score-i*3)}</em></button>)}</div>)}</section>}
-function KPI({players}:{players:Player[]}){return <section className="grid2"><div className="panel"><h3>Gerçek Grafikler</h3><Bar l="Rapor Tamamlama" v={82}/><Bar l="A Hedef Dönüşüm" v={44}/><Bar l="ROI Potansiyeli" v={67}/><Bar l="Scout Aktivitesi" v={76}/></div><div className="panel"><h3>Risk / ROI</h3>{players.map(p=><div className="rank" key={p.id}><b>{p.name}</b><span>Risk %{p.injuryRisk} · ROI %{p.roi}</span></div>)}</div></section>}
-function Bar({l,v}:{l:string;v:number}){return <div className="bar"><div><span>{l}</span><b>{v}%</b></div><i><em style={{width:`${v}%`}}/></i></div>}
-function VideoCenter({selected}:{selected:Player|null}){return <section className="panel"><h3>Video / Wyscout / InStat Merkezi</h3><p>Seçili oyuncu: {selected?.name || "-"}</p><div className="videoLinks"><a href={selected?.wyscout||"#"}>Wyscout</a><a href={selected?.instat||"#"}>InStat</a><a href={selected?.youtube||"#"}>YouTube</a></div><div className="videoBox">▶ Video bağlantıları burada yönetilecek.</div></section>}
-function Board({players,printPDF}:any){return <section className="grid2"><div className="panel"><h3>Yönetim Kurulu Ekranı</h3><p>A hedef oyuncular, bütçe, ROI ve risk seviyesi.</p><button onClick={printPDF}>PDF/Print Çıktısı</button></div><div className="panel">{players.filter((p:Player)=>p.status==="A Hedef").map((p:Player)=><div className="rank" key={p.id}><b>{p.name}</b><span>{p.value} · {p.score} skor</span></div>)}</div></section>}
-function AIScout({players}:{players:Player[]}){const [prompt,setPrompt]=useState("24 yaş altı, 30 maç üstü, A hedef olabilecek forvetleri öner.");const result=players.filter(p=>p.age<=25&&p.score>=75);return <section className="panel"><h3>AI Oyuncu Önerisi</h3><textarea value={prompt} onChange={e=>setPrompt(e.target.value)}/><div className="ai">{result.map(p=><div key={p.id}><b>{p.name}</b><span>{p.position} · {p.score} skor</span></div>)}</div><p>Gerçek AI için OpenAI API veya benzeri servis anahtarı bağlanır.</p></section>}
-function SupabasePlan(){return <section className="panel"><h3>Supabase / Veritabanı Hazır Altyapı</h3><pre>{`players
-- id uuid
-- name text
-- position text
-- club text
-- photo_url text
-- report text
-- score int
-
-reports
-- player_id uuid
-- scout_id uuid
-- report text
-- decision text
-
-storage
-- player-photos
-- scout-reports
-- videos`}</pre><p>Sonraki sprintte Supabase project URL ve anon key girilerek kalıcı veri aktif edilir.</p></section>}
-function Settings({role,setRole}:any){return <section className="panel"><h3>Ayarlar</h3><select value={role} onChange={e=>setRole(e.target.value)}><option>Head of Scouting</option><option>Scout</option><option>Technical Director</option><option>Board</option></select><p>Rol bazlı arayüz simülasyonu aktif.</p></section>}
-function MapPanel(){return <div className="panel map"><h3>Dünya Scout Ağı</h3><div><span></span><span></span><span></span><span></span></div><p>Balkanlar · Afrika · İskandinavya · Güney Amerika</p></div>}
+function Login({onLogin}:{onLogin:()=>void}){return <div className="login"><div className="ambient one"/><div className="ambient two"/><section className="loginPanel"><img src="/scoutcore-logo.jpeg" className="loginLogo" alt="ScoutCore"/><div className="loginCard"><h1>Secure Access</h1><p>Football Intelligence Platform</p><label>Username</label><input defaultValue="onur.bas"/><label>Password</label><input defaultValue="ScoutCore2026!" type="password"/><div className="loginOptions"><span>Remember me</span><span>Forgot password?</span></div><button onClick={onLogin}>Login</button></div></section></div>}
+function Home({setActive,players,scouts}:{setActive:(x:string)=>void;players:Player[];scouts:Scout[]}){return <section><div className="homeHero"><div><span>SCOUTCORE COMMAND CENTER</span><h1>Football Intelligence Platform</h1><p>Oyuncu takibi, scout raporları, transfer kararları ve performans analizlerini tek merkezde yöneten profesyonel platform.</p></div><div className="homeSignal"><b>{players.length}</b><small>Active Players</small></div></div><div className="quickGrid"><button onClick={()=>setActive("Players")}><b>Players</b><span>Oyuncu veritabanı, PDF, CSV ve profil ekranları</span></button><button onClick={()=>setActive("Transfer Center")}><b>Transfer Center</b><span>Transfer pipeline ve scout ekibi yönetimi</span></button><button onClick={()=>setActive("Reports")}><b>Reports</b><span>Scout raporları, karar notları ve aksiyon planı</span></button><button onClick={()=>setActive("Video Center")}><b>Video Center</b><span>Oyuncu video linkleri ve analiz notları</span></button></div><div className="homeRows"><div className="panel"><h3>Today</h3><Task t="3 oyuncu için son izleme notu bekleniyor"/><Task t="2 A hedef transfer komitesine hazır"/><Task t="Video Center içinde 4 yeni link kontrol edilecek"/></div><div className="panel"><h3>System Snapshot</h3><Metric l="Reports" v="42"/><Metric l="Scouts" v={String(scouts.length)}/><Metric l="Pipeline" v="18"/></div></div><div className="panel positionPanel"><h3>Pozisyon Klasörleri</h3><p className="positionTitle">Dikey klasör yapısı</p><div className="folderList">{positions.map(p=><button key={p} onClick={()=>setActive("Players")}><b>{p}</b><span>Open</span></button>)}</div></div></section>}
+function Task({t}:{t:string}){return <div className="task"><span/>{t}</div>}
+function Metric({l,v}:{l:string;v:string}){return <div className="miniMetric"><span>{l}</span><b>{v}</b></div>}
+function Players(props:any){return <section className="playersLayout"><div className="panel"><div className="sectionHead"><div><h2>Players</h2><p>Oyuncu ekleme, düzenleme, silme, rapor ve PDF çıktısı.</p></div><div className="actions"><button onClick={()=>props.setEditing(blank)}>+ Add Player</button><button onClick={props.exportCSV}>CSV</button><button onClick={()=>window.print()}>PDF</button></div></div><div className="toolbar"><input value={props.q} onChange={(e:any)=>props.setQ(e.target.value)} placeholder="Search player, club, country..."/><select value={props.filter} onChange={(e:any)=>props.setFilter(e.target.value)}><option>Tümü</option>{positions.map(p=><option key={p}>{p}</option>)}{folders.map(f=><option key={f}>{f}</option>)}</select></div><div className="playerRows">{props.players.map((p:Player)=><div className={props.selected?.id===p.id?"playerRow selected":"playerRow"} key={p.id}><button onClick={()=>props.setSelected(p)}><Avatar p={p}/><div><b>{p.name}</b><span>{p.position} · {p.club} · {p.country}</span></div></button><strong>{p.score}</strong><em>{p.status}</em><button onClick={()=>props.setEditing(p)}>Edit</button><button className="danger" onClick={()=>props.del(p.id)}>Delete</button></div>)}</div></div><Profile player={props.selected} onEdit={props.setEditing} onReports={()=>props.setActive("Reports")}/></section>}
+function Avatar({p}:{p:Player}){return <div className="avatar">{p.photo?<img src={p.photo} alt={p.name}/>:p.name.split(" ").map(x=>x[0]).slice(0,2).join("")}</div>}
+function Profile({player,onEdit,onReports}:{player:Player|null;onEdit:(p:Player)=>void;onReports:()=>void}){if(!player)return <div className="panel">Oyuncu seçilmedi.</div>;return <aside className="panel profilePanel"><div className="profileTop"><div className="bigAvatar">{player.photo?<img src={player.photo} alt={player.name}/>:player.name.split(" ").map(x=>x[0]).slice(0,2).join("")}</div><div><h3>{player.name}</h3><p>{player.position} · {player.club}</p><i>{player.status}</i></div></div><div className="profileScore"><b>{player.score}</b><span>ScoutCore Score</span></div><div className="infoGrid">{[["Age",player.age],["Foot",player.foot],["Height",player.height],["Contract",player.contract],["Matches",player.matches],["Minutes",player.minutes],["Goals",player.goals],["Assists",player.assists],["Value",player.value],["Salary",player.salary]].map(([l,v])=><div className="info" key={String(l)}><span>{String(l)}</span><b>{String(v||"-")}</b></div>)}</div><div className="profileActions"><button onClick={()=>onEdit(player)}>Edit Profile</button><button onClick={onReports}>Report</button><button onClick={()=>window.print()}>PDF</button></div></aside>}
+function Editor({player,onSave,onCancel}:{player:Player;onSave:(p:Player)=>void;onCancel:()=>void}){const[p,setP]=useState(player);function u(k:keyof Player,v:any){setP({...p,[k]:v})}return <div className="modal"><div className="editor"><h2>{p.id?"Edit Player":"Add Player"}</h2><div className="editorGrid"><input placeholder="Name" value={p.name} onChange={e=>u("name",e.target.value)}/><select value={p.position} onChange={e=>u("position",e.target.value)}>{positions.map(x=><option key={x}>{x}</option>)}</select><input placeholder="Club" value={p.club} onChange={e=>u("club",e.target.value)}/><input placeholder="Country" value={p.country} onChange={e=>u("country",e.target.value)}/><input placeholder="Photo URL" value={p.photo} onChange={e=>u("photo",e.target.value)}/><input placeholder="Age" value={p.age} onChange={e=>u("age",Number(e.target.value)||0)}/><input placeholder="Height" value={p.height} onChange={e=>u("height",e.target.value)}/><input placeholder="Foot" value={p.foot} onChange={e=>u("foot",e.target.value)}/><input placeholder="Contract" value={p.contract} onChange={e=>u("contract",e.target.value)}/><input placeholder="Value" value={p.value} onChange={e=>u("value",e.target.value)}/><input placeholder="Score" value={p.score} onChange={e=>u("score",Number(e.target.value)||0)}/><select value={p.folder} onChange={e=>u("folder",e.target.value)}>{folders.map(x=><option key={x}>{x}</option>)}</select></div><div className="modalActions"><button onClick={()=>onSave(p)}>Save</button><button onClick={onCancel}>Cancel</button></div></div></div>}
+function Scouting({players,scouts}:{players:Player[];scouts:Scout[]}){return <section className="twoCol"><div className="panel"><h2>Scouting</h2><p>Aktif scout görevleri ve oyuncu izleme akışı.</p>{players.map(p=><Task key={p.id} t={`${p.name} için ${p.action}`}/>)}</div><div className="panel"><h3>Scout Team</h3>{scouts.map(s=><div className="scoutCard" key={s.id}><b>{s.name}</b><span>{s.region} · {s.reports} rapor</span></div>)}</div></section>}
+function Reports({selected,update}:{selected:Player|null;update:(p:Player)=>void}){if(!selected)return <div className="panel">Oyuncu seçilmedi.</div>;function u(k:keyof Player,v:any){update({...(selected as Player),[k]:v} as Player)}return <section className="panel reportPage"><div className="sectionHead"><div><h2>Reports</h2><p>{selected.name} scout raporu</p></div><button onClick={()=>window.print()}>PDF</button></div><label>Scout Report</label><textarea value={selected.report} onChange={e=>u("report",e.target.value)}/><div className="reportGrid"><div><label>Strengths</label><textarea value={selected.strengths} onChange={e=>u("strengths",e.target.value)}/></div><div><label>Weaknesses</label><textarea value={selected.weaknesses} onChange={e=>u("weaknesses",e.target.value)}/></div></div><label>Action</label><input value={selected.action} onChange={e=>u("action",e.target.value)}/></section>}
+function VideoCenter({selected,update}:{selected:Player|null;update:(p:Player)=>void}){if(!selected)return <div className="panel">Oyuncu seçilmedi.</div>;function u(k:keyof Player,v:any){update({...(selected as Player),[k]:v} as Player)}return <section className="videoLayout"><div className="panel"><h2>Video Center</h2><p>Video linkleri ve analiz notları bu alanda yönetilir.</p><label>Video URL</label><input value={selected.video} onChange={e=>u("video",e.target.value)}/><label>External Analysis Link</label><input value={selected.externalLink} onChange={e=>u("externalLink",e.target.value)}/></div><div className="panel videoBox"><div className="play">▶</div><b>{selected.name}</b><span>Video preview area</span></div></section>}
+function Transfer({players,scouts,setSelected,setActive,newScout,setNewScout,addScout,removeScout}:any){const stages=["Takip","İzleniyor","Aday","Komite","Onay","Transfer"];return <section className="transferLayout"><div className="pipeline panel"><h2>Transfer Center</h2><div className="pipeGrid">{stages.map(stage=><div className="pipeCol" key={stage}><h3>{stage}</h3>{players.slice(0,3).map((p:Player)=><button key={stage+p.id} onClick={()=>{setSelected(p);setActive("Players")}}><b>{p.name}</b><span>{p.position} · {p.score}</span></button>)}</div>)}</div></div><div className="panel"><h2>Scout Management</h2><div className="scoutForm"><input placeholder="Scout name" value={newScout.name} onChange={(e:any)=>setNewScout({...newScout,name:e.target.value})}/><input placeholder="Region" value={newScout.region} onChange={(e:any)=>setNewScout({...newScout,region:e.target.value})}/><input placeholder="Role" value={newScout.role} onChange={(e:any)=>setNewScout({...newScout,role:e.target.value})}/><button onClick={addScout}>Add Scout</button></div>{scouts.map((s:Scout)=><div className="scoutCard manage" key={s.id}><div><b>{s.name}</b><span>{s.region} · {s.role}</span></div><button onClick={()=>removeScout(s.id)}>Remove</button></div>)}</div></section>}
+function Analytics({players,scouts}:{players:Player[];scouts:Scout[]}){return <section className="twoCol"><div className="panel"><h2>Analytics</h2><Bar label="Report Completion" value={82}/><Bar label="A Target Conversion" value={44}/><Bar label="Potential Index" value={71}/><Bar label="Scout Activity" value={76}/></div><div className="panel"><h2>Team Activity</h2>{scouts.map(s=><div className="rank" key={s.id}><b>{s.name}</b><span>{s.reports} reports</span></div>)}</div></section>}
+function Bar({label,value}:{label:string;value:number}){return <div className="bar"><div><span>{label}</span><b>{value}%</b></div><i><em style={{width:`${value}%`}}/></i></div>}
+function AI({players}:{players:Player[]}){const[prompt,setPrompt]=useState("24 yaş altı, yüksek potansiyelli, maliyeti düşük oyuncuları listele.");const results=players.filter(p=>p.age<=25&&p.potential>=80);return <section className="panel aiPanel"><h2>AI Module</h2><textarea value={prompt} onChange={e=>setPrompt(e.target.value)}/>{results.map(p=><div className="rank" key={p.id}><b>{p.name}</b><span>{p.position} · Potential {p.potential}</span></div>)}</section>}
+function Settings({exportCSV}:{exportCSV:()=>void}){return <section className="panel"><h2>Settings</h2><p>ScoutCore arayüz ayarları, dışa aktarım ve sistem yönetimi.</p><div className="actions"><button onClick={exportCSV}>CSV Export</button><button onClick={()=>window.print()}>PDF Print</button></div></section>}

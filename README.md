@@ -1,22 +1,12 @@
-# ScoutCore Enterprise v3
+# ScoutCore V4 Elite Interface
 
-Bu paket Vercel için doğrulanabilir Next.js uygulamasıdır.
-
-## Eklenen Modüller
-- Login ekranı simülasyonu
-- Rol bazlı kullanıcı arayüzü: Scout Şefi, Scout, Teknik Direktör, Yönetim
-- Oyuncu ekle / düzenle / sil
-- Oyuncu profili ve fotoğraf alanı
-- Scout raporu yazma alanı
-- PDF rapor çıktısı için print/PDF butonu
-- Excel import/export mantığı: CSV dışa aktar + CSV içe aktar alanı
-- Video/Wyscout/InStat linkleri
-- Transfer komitesi
-- Yönetim kurulu dashboard
-- KPI grafikleri
-- Mobil uyum
-- Supabase entegrasyon planı
-- AI Scout öneri ekranı
-
-## Not
-Bu sürüm Vercel'de çalışan fonksiyonel frontend/demo sürümüdür. Gerçek kalıcı veritabanı için Supabase bilgileri bağlanmalıdır.
+- Gönderilen ScoutCore logosu kullanıldı
+- Kulüp/Çorum FK referansı yok
+- Başlangıç sayfası sade komuta merkezi olarak tasarlandı
+- Üst sekmeli yapı: Home, Players, Scouting, Reports, Video Center, Transfer Center, Analytics, AI Module, Settings
+- Yönetim Kurulu bölümü kaldırıldı
+- PDF/CSV Players içine alındı
+- Pozisyon klasörleri dikey klasör mantığında Home içine alındı
+- Video Center korundu ve iyileştirildi
+- Transfer Center içine scout ekleme/silme eklendi
+- Oyuncu ekle/düzenle/sil ve scout raporu düzenleme var

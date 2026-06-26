@@ -1,6 +1,6 @@
 {
-  "name": "scoutcore-enterprise-v3",
-  "version": "3.0.0",
+  "name": "scoutcore-v4-elite-interface",
+  "version": "4.0.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
