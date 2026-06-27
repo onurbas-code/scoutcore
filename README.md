@@ -1,14 +1,15 @@
-# ScoutCore V8 TR Player Fix
+# ScoutCore V9 Supabase TR
 
-## Değişiklikler
-- Ana ekrandaki sağ yeşil Players/Open Tasks istatistik paneli kaldırıldı.
-- Ajanda ana ekrandan kaldırıldı ve üst menüye ayrı buton olarak eklendi.
-- Oyuncular butonunun yanına Bizim Oyuncularımız eklendi.
-- Bizim Oyuncularımız bölümü Oyuncular modülüyle aynı yapıda tasarlandı.
-- Oyuncuya tıklanınca kişisel bilgi sayfasının açılması düzeltildi.
-- Arayüz tamamen Türkçeleştirildi.
-- Ana sayfada logonun altındaki "Football Intelligence Platform" başlığı özellikle korundu.
-- Oyuncular ve Bizim Oyuncularımız verileri ayrı localStorage alanlarında kalıcı tutulur.
+Bu sürüm localStorage yerine Supabase veritabanı kullanır. Veriler tüm cihazlarda ortak görünür.
 
 ## Kurulum
-ZIP içindeki dosyaları GitHub reposunun kök dizinine yükleyin.
+1. Supabase > SQL Editor aç.
+2. `supabase/SCOUTCORE_SUPABASE_KURULUM.sql` dosyasındaki kodu yapıştır ve RUN yap.
+3. Vercel Environment Variables içinde şu iki değer olmalı:
+   - NEXT_PUBLIC_SUPABASE_URL
+   - NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY
+4. ZIP içindeki dosyaları GitHub/Vercel projesine yükle.
+5. Deploy sonrası giriş ekranında “Yeni kullanıcı oluştur” ile kullanıcı oluştur.
+
+## Not
+E-posta doğrulama açıksa Supabase Authentication > Providers > Email bölümünden kapatabilir veya mail doğrulamasını tamamlayabilirsin.
