@@ -1,15 +1,17 @@
-# ScoutCore V9 Supabase TR
+# ScoutCore V10 Enterprise TR
 
-Bu sürüm localStorage yerine Supabase veritabanı kullanır. Veriler tüm cihazlarda ortak görünür.
+Eklenen modüller:
+- Profesyonel Oyuncu Profili: fotoğraf, PDF/print scout raporu, video linki, video dosyası, dış profil linki, oyuncu belgeleri.
+- Gerçek Scout Yönetimi: scout ekibi, görev atama, hangi maç/oyuncu, görev durumu.
+- Kulüp Yönetim Modülü: transfer komitesi, aday oylaması, yönetici onayı, bütçe ve maaş simülasyonu.
+- ScoutCore AI: otomatik analiz, güçlü/zayıf yön, benzer profil, Süper Lig uygunluğu, transfer risk puanı, potansiyel tahmini.
 
-## Kurulum
-1. Supabase > SQL Editor aç.
-2. `supabase/SCOUTCORE_SUPABASE_KURULUM.sql` dosyasındaki kodu yapıştır ve RUN yap.
-3. Vercel Environment Variables içinde şu iki değer olmalı:
-   - NEXT_PUBLIC_SUPABASE_URL
-   - NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY
-4. ZIP içindeki dosyaları GitHub/Vercel projesine yükle.
-5. Deploy sonrası giriş ekranında “Yeni kullanıcı oluştur” ile kullanıcı oluştur.
+## Supabase Kurulum
+V9 SQL kurulu olmalı. Sonra:
+`supabase/SCOUTCORE_V10_ENTERPRISE_MIGRATION.sql`
+Dosyasını Supabase > SQL Editor > New Query içine yapıştırıp RUN çalıştır.
 
-## Not
-E-posta doğrulama açıksa Supabase Authentication > Providers > Email bölümünden kapatabilir veya mail doğrulamasını tamamlayabilirsin.
+## Vercel
+Mevcut değişkenler kullanılmaya devam eder:
+- NEXT_PUBLIC_SUPABASE_URL
+- NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY
