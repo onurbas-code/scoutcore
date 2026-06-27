@@ -1,17 +1,16 @@
-# ScoutCore V10 Enterprise TR
+# ScoutCore V11 Elite Operations TR
 
-Eklenen modüller:
-- Profesyonel Oyuncu Profili: fotoğraf, PDF/print scout raporu, video linki, video dosyası, dış profil linki, oyuncu belgeleri.
-- Gerçek Scout Yönetimi: scout ekibi, görev atama, hangi maç/oyuncu, görev durumu.
-- Kulüp Yönetim Modülü: transfer komitesi, aday oylaması, yönetici onayı, bütçe ve maaş simülasyonu.
-- ScoutCore AI: otomatik analiz, güçlü/zayıf yön, benzer profil, Süper Lig uygunluğu, transfer risk puanı, potansiyel tahmini.
+Eklenenler:
+- Ana ekran korundu.
+- Operasyon Merkezi eklendi.
+- Radar grafikler eklendi.
+- Gelişmiş filtreleme eklendi.
+- Bildirim Merkezi eklendi.
+- Bizim Oyuncularımız adı Kulüp Kadrosu olarak değiştirildi.
+- Kulüp Kadrosu performans takip ekranı eklendi.
+- Workspace modülü eklendi.
+- Pozisyon klasörlerinde ScoutCore puanı, yıldız, potansiyel, yaş ve son eklenen sıralaması eklendi.
+- Oyuncu kartlarında #1 Stoper, #2 Stoper gibi mevki içi sıralama etiketi eklendi.
 
-## Supabase Kurulum
-V9 SQL kurulu olmalı. Sonra:
-`supabase/SCOUTCORE_V10_ENTERPRISE_MIGRATION.sql`
-Dosyasını Supabase > SQL Editor > New Query içine yapıştırıp RUN çalıştır.
-
-## Vercel
-Mevcut değişkenler kullanılmaya devam eder:
-- NEXT_PUBLIC_SUPABASE_URL
-- NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY
+Supabase'de çalıştırılacak dosya:
+`supabase/SCOUTCORE_V11_ELITE_OPERATIONS_MIGRATION.sql`

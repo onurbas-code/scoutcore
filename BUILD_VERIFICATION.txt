@@ -1,1 +1,1 @@
-BUILD OK - Next.js production build passed
+BUILD OK
