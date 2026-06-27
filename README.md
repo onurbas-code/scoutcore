@@ -1,10 +1,14 @@
-# ScoutCore V7 Elite Persistent
+# ScoutCore V8 TR Player Fix
 
-- Oyuncu ekleme/düzenleme/silme localStorage ile kalıcı hale getirildi.
-- Sayfa kapanıp açıldığında eklenen oyuncular kaybolmaz; silinen oyuncular geri gelmez.
-- Yıldız sistemi 0-5 arası tam yıldızdır.
-- ScoutCore ve potansiyel puanı 0-10 arasıdır.
-- Players bölümü klasör, gelişmiş arama, favori, etiket, sözleşme alarmı, karşılaştırma, rapor arşivi ve timeline ile güçlendirildi.
-- Çoklu scout raporu, transfer pipeline ve görev sistemi eklendi.
+## Değişiklikler
+- Ana ekrandaki sağ yeşil Players/Open Tasks istatistik paneli kaldırıldı.
+- Ajanda ana ekrandan kaldırıldı ve üst menüye ayrı buton olarak eklendi.
+- Oyuncular butonunun yanına Bizim Oyuncularımız eklendi.
+- Bizim Oyuncularımız bölümü Oyuncular modülüyle aynı yapıda tasarlandı.
+- Oyuncuya tıklanınca kişisel bilgi sayfasının açılması düzeltildi.
+- Arayüz tamamen Türkçeleştirildi.
+- Ana sayfada logonun altındaki "Football Intelligence Platform" başlığı özellikle korundu.
+- Oyuncular ve Bizim Oyuncularımız verileri ayrı localStorage alanlarında kalıcı tutulur.
 
-Not: Veriler tarayıcı localStorage içinde kalıcıdır. Çoklu cihaz/kullanıcı için sonraki adım Supabase entegrasyonudur.
+## Kurulum
+ZIP içindeki dosyaları GitHub reposunun kök dizinine yükleyin.
