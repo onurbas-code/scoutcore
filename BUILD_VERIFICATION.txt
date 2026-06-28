@@ -1,5 +1,5 @@
 
-> scoutcore-v14-final-ui-tr@14.0.0 build
+> scoutcore-v15-elite-tr@15.0.0 build
 > next build
 
   ▲ Next.js 14.2.5
@@ -17,7 +17,7 @@
    Collecting build traces ...
 
 Route (app)                              Size     First Load JS
-┌ ○ /                                    10.8 kB        97.9 kB
+┌ ○ /                                    11.2 kB        98.3 kB
 └ ○ /_not-found                          871 B            88 kB
 + First Load JS shared by all            87.1 kB
   ├ chunks/23-0c40d6df9b62e9bb.js        31.5 kB

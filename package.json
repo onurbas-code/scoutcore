@@ -1,6 +1,6 @@
 {
-  "name": "scoutcore-v14-final-ui-tr",
-  "version": "14.0.0",
+  "name": "scoutcore-v15-elite-tr",
+  "version": "15.0.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
