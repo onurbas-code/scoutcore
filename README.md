@@ -40,3 +40,16 @@ Build testi yapılmıştır.
 ## Supabase
 Ek kontrol için Supabase SQL Editor’da şunu çalıştırabilirsin:
 `supabase/SCOUTCORE_V13_UI_FIX.sql`
+
+
+# ScoutCore V14 Final UI TR
+
+## Son düzeltmeler
+- Oyuncu ekleme UUID hatasına karşı frontend payload temizliği güçlendirildi.
+- `id`, `created_by`, `player_id`, `workspace_id` gibi UUID alanlarına boş string gönderimi engellendi.
+- Yaş otomatik hesaplama kaldırıldı; doğum tarihi ve yaş ayrı manuel alanlar oldu.
+- Oyuncu detay ekranı artık liste altında değil, aynı sekme içinde tam sayfa bilgi ekranı olarak açılır.
+- Detay ekranına geri dönüş butonu eklendi.
+- Kulüp Kadrosu satır görünümü sadeleştirildi: solda sadece ad soyad, sağda küçük kutularda yaş, maç, gol, asist, dakika, sarı kart, kırmızı kart.
+- Kulüp Kadrosu butonları küçültüldü ve düzenlendi.
+- Radar değerleri placeholder açıklamaları korundu.
