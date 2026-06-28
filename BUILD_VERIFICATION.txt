@@ -1,29 +1,8 @@
+BUILD OK
 
-> scoutcore-v15-elite-tr@15.0.0 build
-> next build
-
-  ▲ Next.js 14.2.5
-
-   Creating an optimized production build ...
- ✓ Compiled successfully
-   Linting and checking validity of types ...
-   Collecting page data ...
-   Generating static pages (0/4) ...
-   Generating static pages (1/4) 
-   Generating static pages (2/4) 
-   Generating static pages (3/4) 
- ✓ Generating static pages (4/4)
-   Finalizing page optimization ...
-   Collecting build traces ...
-
-Route (app)                              Size     First Load JS
-┌ ○ /                                    11.2 kB        98.3 kB
-└ ○ /_not-found                          871 B            88 kB
-+ First Load JS shared by all            87.1 kB
-  ├ chunks/23-0c40d6df9b62e9bb.js        31.5 kB
-  ├ chunks/fd9d1056-62aaf4b921c84028.js  53.6 kB
-  └ other shared chunks (total)          1.92 kB
-
-
-○  (Static)  prerendered as static content
-
+Next.js production build completed successfully.
+V16 changes:
+- Topbar tek sıra hizalı.
+- İzlenen Futbolcular liste kartları tek satır/premium hizalı.
+- Düzenle/Sil ve skor kutuları sağa hizalı.
+- Supabase SQL gerektirmez.

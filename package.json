@@ -1,6 +1,6 @@
 {
-  "name": "scoutcore-v15-elite-tr",
-  "version": "15.0.0",
+  "name": "scoutcore-v16-final-polish-tr",
+  "version": "16.0.0",
   "private": true,
   "scripts": {
     "dev": "next dev",

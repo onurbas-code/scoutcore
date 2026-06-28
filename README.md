@@ -17,3 +17,11 @@
 Yeni sürüm için sadece şu dosyayı SQL Editor içinde çalıştırın:
 
 `supabase/SCOUTCORE_V15_ELITE_MIGRATION.sql`
+
+
+# ScoutCore V16 Final Polish TR
+- Üst menü tek sıraya hizalandı; Çıkış butonu aynı satırda kalır.
+- İzlenen Futbolcular kartları tek satır, düzenli ve premium liste görünümüne alındı.
+- Düzenle/Sil butonları küçültüldü ve sağa hizalandı.
+- Skor kutuları aynı hizada sabitlendi.
+- Kulüp Kadrosu tablo aksiyonu sıkılaştırıldı.
