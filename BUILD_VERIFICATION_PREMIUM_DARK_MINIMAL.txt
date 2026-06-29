@@ -1,0 +1,11 @@
+ScoutCore V16 Premium Dark Minimal
+Date: 2026-06-29
+Changes: CSS-only visual/background/color polish.
+- Login screen background changed to charcoal/dark minimal.
+- Dashboard app background changed to charcoal/dark minimal.
+- Removed/hidden neon streaks behind central logo.
+- Reduced green/glow intensity.
+- Cards changed to antrasit/charcoal panels with subtle borders.
+- Sidebar active state simplified.
+- Logos and functions untouched.
+Build: npm run build completed successfully.

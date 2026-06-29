@@ -1,15 +1,17 @@
-ScoutCore V16 Premium Dark Minimal UI
+ScoutCore V16 Ultimate UI - Cleanup Build Verification
+Date: 2026-06-29
 
-Yapılan işlem:
-- Login ekranında yalnızca arka plan Premium Dark Minimal tona alındı.
-- Ana ekranda arka plan yoğun görsel/neon etkilerden arındırıldı.
-- Charcoal/antrasit arka plan ve mat kart yüzeyleri uygulandı.
-- Yeşil vurgu daha yumuşak tona çekildi.
-- Glow ve neon efektleri azaltıldı.
-- Merkez logo, sol üst logo ve içerikler korunmuştur.
-- Fonksiyon, Supabase bağlantısı, veri modeli ve sayfa içerikleri değiştirilmemiştir.
+Requested cleanup applied:
+- Topbar season text removed.
+- Two right-side topbar buttons next to Onur Baş removed.
+- Sidebar footer copyright updated from 2024 to 2026.
+- Login screen season text removed.
+- Login screen scaled down so full form/status area fits better on one screen.
+- Observed Players position folder labels changed to uppercase format, e.g. KALECİ - 1 FUTBOLCU.
+- Supabase files and database logic were not changed.
 
-Test:
-- npm install çalıştırıldı.
-- npm run build çalıştırıldı.
-- Build sonucu: başarılı.
+Build command:
+npm run build
+
+Result:
+Successful build. Next.js compiled successfully and generated static pages.
