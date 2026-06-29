@@ -1,0 +1,20 @@
+ScoutCore V17 Elite UI Patch
+
+Yapılanlar:
+- Premium giriş/kayıt ekranı tasarlandı.
+- Yeni ScoutCore Elite logosu public içine eklendi ve eski logo referansları güncellendi.
+- Ana sayfa sadece yeni logo görünecek şekilde sadeleştirildi.
+- Üst menüye Oyuncu Karşılaştırma bölümü eklendi.
+- Üst menü butonları aynı hizada ve yatay taşmaya dayanıklı şekilde düzenlendi.
+- İki oyunculu karşılaştırma ekranı eklendi.
+- Oyuncu seçme, oyuncu ekleme, oyuncu çıkarma ve seçimleri temizleme butonları eklendi.
+- Karşılaştırma tablosunda öne çıkan değerler görsel olarak vurgulandı.
+- Responsive CSS düzenlemeleri eklendi.
+
+Test:
+- npm install --no-audit --no-fund: başarılı.
+- npm run build: başarılı.
+- Next.js production build sorunsuz tamamlandı.
+
+SQL:
+- Yeni Supabase SQL gerekmez.
