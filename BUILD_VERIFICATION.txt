@@ -1,17 +1,19 @@
-ScoutCore V16 Ultimate UI - Cleanup Build Verification
+ScoutCore V16 Ultimate UI Polish
 Date: 2026-06-29
 
-Requested cleanup applied:
-- Topbar season text removed.
-- Two right-side topbar buttons next to Onur Baş removed.
-- Sidebar footer copyright updated from 2024 to 2026.
-- Login screen season text removed.
-- Login screen scaled down so full form/status area fits better on one screen.
-- Observed Players position folder labels changed to uppercase format, e.g. KALECİ - 1 FUTBOLCU.
-- Supabase files and database logic were not changed.
+Changes applied:
+- No functional logic changed.
+- Logo files untouched.
+- Supabase files untouched.
+- src/app/globals.css updated with premium dark polish overrides.
+- Green intensity reduced across UI.
+- Glow effects reduced.
+- Main dashboard background darkened and simplified.
+- Cards changed toward matte anthracite/fume borders with subtle green hover.
+- Sidebar active state changed to dark button with 4px green left indicator.
+- KPI titles kept neutral while numeric emphasis remains green.
 
-Build command:
-npm run build
-
-Result:
-Successful build. Next.js compiled successfully and generated static pages.
+Build test:
+- npm ci --no-audit --no-fund
+- npm run build
+- Result: SUCCESS

@@ -9,3 +9,71 @@
 .loginScreen{padding:6px;align-items:center;overflow:auto}.loginShell{width:min(920px,100%);min-height:auto;max-height:none;padding:18px clamp(16px,4vw,56px) 16px;border-radius:20px}.loginMini{left:26px;top:18px}.loginMini img{width:150px;height:56px}.loginHero{margin:40px auto 8px}.loginHero img{width:min(530px,72vw);max-height:330px}.loginForm{width:min(560px,100%);margin:-20px auto 0}.inputWrap{height:58px;margin:9px 0;gap:18px;padding:0 22px}.inputWrap span{font-size:20px}.inputWrap i{font-size:20px}.inputWrap input{font-size:18px}.loginMeta{margin:14px 18px 20px}.loginMeta label,.loginMeta button{font-size:15px}.loginMeta input{width:22px;height:22px}.loginSubmit{height:62px;font-size:22px}.loginSubmit span{right:28px;font-size:40px;top:5px}.or{margin:22px 0 18px;font-size:16px;gap:14px}.loginAlt{gap:18px}.loginAlt button{height:58px;font-size:14px}.loginStatus{margin:24px auto 0;padding:14px 0;gap:8px}.loginStatus div{padding:0 14px}.loginStatus b{font-size:12px}.loginStatus span{font-size:14px;margin-top:5px}.copy{margin-top:14px;font-size:13px}.positionFolder summary b{text-transform:uppercase;letter-spacing:.02em}.positionFolder summary span{display:none}
 @media(max-height:820px) and (min-width:901px){.loginShell{padding-top:14px;padding-bottom:12px}.loginMini img{width:128px;height:48px}.loginHero{margin-top:26px}.loginHero img{width:min(440px,62vw);max-height:255px}.loginForm{width:min(520px,100%);margin:-14px auto 0}.inputWrap{height:52px;margin:8px 0}.loginSubmit{height:56px;font-size:20px}.or{margin:16px 0 14px}.loginAlt button{height:52px}.loginStatus{margin-top:16px;padding:10px 0}.copy{margin-top:10px}}
 @media(max-width:900px){.loginHero img{width:min(500px,82vw);max-height:300px}.loginForm{margin:-12px auto 0}.loginStatus{grid-template-columns:repeat(2,1fr)}}
+
+/* ScoutCore V16 Ultimate UI Polish: premium dark balance, reduced neon intensity. Functions untouched. */
+:root{
+  --bg:#030606;
+  --panel:rgba(10,14,16,.82);
+  --panel2:rgba(13,18,20,.90);
+  --line:rgba(255,255,255,.11);
+  --line2:rgba(255,255,255,.10);
+  --text:#f4f6f3;
+  --muted:#9aa39b;
+  --green:#6bbf3a;
+  --green2:#7acb4a;
+}
+html,body{background:#030606;}
+body:before{background:radial-gradient(circle at 50% 16%,rgba(107,191,58,.055),transparent 30%),linear-gradient(180deg,#050707,#030606 72%)!important;}
+body:after{opacity:.065!important;background-image:linear-gradient(rgba(107,191,58,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(107,191,58,.025) 1px,transparent 1px)!important;background-size:72px 72px!important;}
+
+.loginScreen{padding:14px!important;background:linear-gradient(180deg,rgba(2,5,5,.62),rgba(2,5,5,.95)),url('/scoutcore-login-reference.jpeg') center/cover no-repeat!important;}
+.loginShell{border-color:rgba(255,255,255,.13)!important;background:linear-gradient(180deg,rgba(6,10,11,.30),rgba(3,6,6,.62))!important;box-shadow:0 24px 70px rgba(0,0,0,.48),inset 0 0 90px rgba(0,0,0,.46)!important;}
+.loginMini img,.loginHero img,.brand img,.centerLogo img{filter:drop-shadow(0 0 10px rgba(107,191,58,.20))!important;}
+.inputWrap{border-color:rgba(255,255,255,.13)!important;background:linear-gradient(180deg,rgba(9,14,15,.78),rgba(6,10,11,.58))!important;box-shadow:inset 0 0 18px rgba(255,255,255,.025),0 14px 28px rgba(0,0,0,.30)!important;}
+.inputWrap:focus-within{border-color:rgba(107,191,58,.42)!important;box-shadow:0 0 0 3px rgba(107,191,58,.06),0 14px 28px rgba(0,0,0,.34)!important;}
+.inputWrap span,.inputWrap i{color:var(--green)!important;text-shadow:none!important;}
+.loginSubmit{border-color:rgba(107,191,58,.52)!important;background:linear-gradient(180deg,rgba(107,191,58,.88),rgba(80,148,45,.82))!important;box-shadow:0 10px 26px rgba(0,0,0,.35),inset 0 1px 0 rgba(255,255,255,.12)!important;}
+.loginSubmit:hover{box-shadow:0 0 20px rgba(107,191,58,.16),0 14px 32px rgba(0,0,0,.38)!important;}
+.loginAlt button{border-color:rgba(255,255,255,.14)!important;background:rgba(8,13,14,.70)!important;box-shadow:none!important;}
+.loginAlt button:hover{border-color:rgba(107,191,58,.34)!important;box-shadow:0 0 14px rgba(107,191,58,.08)!important;}
+.loginStatus{border-top-color:rgba(255,255,255,.09)!important;border-bottom-color:rgba(255,255,255,.06)!important;}
+.loginStatus span,.loginMeta button,.or,.copy{color:var(--green)!important;}
+.or span{background:linear-gradient(90deg,transparent,rgba(107,191,58,.22),transparent)!important;}
+
+.app{background:linear-gradient(180deg,rgba(2,5,5,.86),rgba(2,5,5,.97)),url('/scoutcore-dashboard-reference.jpeg') center/cover fixed no-repeat!important;}
+.sidebar{background:linear-gradient(180deg,rgba(5,8,9,.96),rgba(3,6,6,.98))!important;border-right-color:rgba(255,255,255,.10)!important;box-shadow:14px 0 44px rgba(0,0,0,.30)!important;}
+.brand{border-bottom-color:rgba(255,255,255,.08)!important;}
+.tab{color:#eff3ee!important;}
+.tab:after{background:rgba(255,255,255,.045)!important;}
+.tabIcon{color:#cfd6cf!important;filter:none!important;}
+.tab:hover{background:rgba(255,255,255,.045)!important;border-color:rgba(255,255,255,.08)!important;}
+.tab.active{background:rgba(255,255,255,.055)!important;border-color:rgba(255,255,255,.10)!important;box-shadow:inset 4px 0 0 var(--green)!important;}
+.tab.active .tabIcon{color:var(--green)!important;filter:drop-shadow(0 0 6px rgba(107,191,58,.36))!important;}
+.tab em,.bell em{background:var(--green)!important;color:#071009!important;box-shadow:none!important;}
+.logout{background:rgba(255,255,255,.025)!important;border-color:rgba(255,255,255,.12)!important;}
+.sideFoot b,.topTools small{color:var(--green)!important;}
+.topbar{background:rgba(3,6,6,.68)!important;border-bottom-color:rgba(255,255,255,.10)!important;}
+.workspace:after{background:rgba(3,6,6,.88)!important;border-top-color:rgba(255,255,255,.09)!important;}
+
+.dashKpis button,.elite-card,.kpi,.positionFolder,.squadTable,.kanbanCol,.notify,.calDay,.contactCard,.rowCard,.scoreMini,.info{border-color:rgba(255,255,255,.115)!important;background:linear-gradient(180deg,rgba(14,19,21,.78),rgba(7,11,12,.74))!important;box-shadow:0 18px 36px rgba(0,0,0,.22),inset 0 1px 0 rgba(255,255,255,.035)!important;}
+.dashKpis button:hover,.elite-card:hover,.kpi:hover,.positionFolder:hover{border-color:rgba(107,191,58,.30)!important;box-shadow:0 0 16px rgba(107,191,58,.075),0 18px 36px rgba(0,0,0,.24)!important;}
+.dashKpis i{color:#c9d1ca!important;}
+.dashKpis b,.kpi b,.elite-card p b,.elite-card p strong,.miniStats b,.scoreMini b,.info b,.calDay b,.sideFoot b,.positionFolder summary{color:var(--green)!important;}
+.dashKpis span,.kpi span,.elite-card p small,.db em,.sideFoot span{color:#9ca69e!important;}
+.centerLogo:before,.centerLogo:after{opacity:.16!important;filter:blur(1px)!important;background:linear-gradient(135deg,transparent 42%,rgba(107,191,58,.28),transparent 50%)!important;}
+.centerLogo:before{left:7%!important;}
+.centerLogo:after{right:7%!important;}
+.ring{box-shadow:0 0 12px rgba(107,191,58,.10)!important;background:radial-gradient(circle at center,#070c0a 55%,transparent 57%),conic-gradient(var(--green) 0 350deg,rgba(255,255,255,.12) 350deg)!important;}
+
+.actions button,button:not(.tab):not(.brand):not(.hamb):not(.loginSubmit),.modalActions button{border-color:rgba(107,191,58,.22)!important;background:linear-gradient(180deg,rgba(107,191,58,.16),rgba(107,191,58,.075))!important;box-shadow:none!important;}
+.actions button:hover,button:not(.tab):not(.brand):not(.hamb):not(.loginSubmit):hover,.modalActions button:hover{border-color:rgba(107,191,58,.38)!important;box-shadow:0 0 14px rgba(107,191,58,.08)!important;}
+input:focus,select:focus,textarea:focus{border-color:rgba(107,191,58,.42)!important;box-shadow:0 0 0 3px rgba(107,191,58,.055)!important;}
+.star.on{color:var(--green)!important;}
+.radarGrid{fill:rgba(107,191,58,.025)!important;stroke:#2c3432!important;}
+.radarPoly{fill:rgba(107,191,58,.16)!important;stroke:var(--green)!important;}
+.bar em{background:linear-gradient(90deg,var(--green),#58a936)!important;}
+.message,.calDay span{background:rgba(107,191,58,.055)!important;border-color:rgba(107,191,58,.16)!important;}
+.notice{border-color:rgba(107,191,58,.22)!important;background:rgba(107,191,58,.055)!important;}
+.detailScore{border-color:rgba(107,191,58,.24)!important;background:rgba(107,191,58,.055)!important;}
+.tabStrip button.active{background:var(--green)!important;color:#071009!important;}
+.editor{border-color:rgba(107,191,58,.20)!important;background:#060b0a!important;}
