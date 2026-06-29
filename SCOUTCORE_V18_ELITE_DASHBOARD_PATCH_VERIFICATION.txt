@@ -1,0 +1,24 @@
+ScoutCore V18 Elite Dashboard Patch
+
+Yapılanlar:
+- Ana sayfa premium canlı panel dashboard yapısına dönüştürüldü.
+- Onaylanan ScoutCore Elite logosu public/scoutcore-elite-logo.png ve public/scoutcore-logo.jpeg olarak güncellendi.
+- Sol üst alana Çıkış butonu eklendi.
+- Üst menü butonları aynı hizada kalacak şekilde düzenlendi ve yatay taşma için güvenli scroll eklendi.
+- Pozisyon dağılımı tamamen Türkçe olarak Kaleci, Sağ Bek, Sol Bek, Orta Saha, Kanat, Forvet gruplarıyla yeniden tasarlandı.
+- Ana sayfada Dünya Haritası, KPI kartları, Günün Oyuncusu, ScoutCore İçgörü, Son Eklenen Oyuncular, Transfer Öncelikleri, Scout Skor Dağılımı, Pozisyon Dağılımı, Son Aktiviteler ve Hızlı Erişim panelleri eklendi.
+- Login ekranındaki İngilizce küçük etiketler Türkçeleştirildi.
+- Oyuncu karşılaştırma bölümü üst menüde korunarak iki oyuncu seçme, ekleme ve çıkarma akışıyla çalışır durumda bırakıldı.
+- Oyuncu ekleme, düzenleme ve silme akışları mevcut Supabase players tablosu üzerinden korunmuştur.
+
+Supabase:
+- Yeni Supabase SQL gerekmez.
+- Yeni tablo gerekmez.
+- Karşılaştırma ve dashboard mevcut players verisinden çalışır.
+
+Test:
+- npm install çalıştırıldı.
+- npm run build başarılı tamamlandı.
+
+Not:
+- Vercel ortam değişkenlerinde mevcut NEXT_PUBLIC_SUPABASE_URL ve NEXT_PUBLIC_SUPABASE_ANON_KEY aynı kalmalıdır.
