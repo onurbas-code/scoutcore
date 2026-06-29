@@ -1,17 +1,23 @@
-ScoutCore V16 Ultimate UI
+ScoutCore Elite V16 Ultimate UI
 
-Yapılan işlem:
-- Login ekranı yeni ScoutCore Elite logosu, stadyum atmosferi, glass inputlar, neon yeşil efektler, animasyonlu Giriş Yap butonu ve alt sistem durumu ile yeniden tasarlandı.
-- Ana sayfa sol dikey menü, üst kullanıcı alanı, büyük orta logo, KPI kartları ve alt operasyon kartları ile yeniden tasarlandı.
-- Menü isimleri istenen sıraya göre sol tarafa taşındı: Anasayfa, Operasyon Merkezi, İzlenen Futbolcular, Kulüp Kadrosu, Workspace, Scout Yönetimi, Transfer Komitesi, Ajanda, Bildirimler, Ayarlar, Çıkış.
-- Onur Baş dışında rol etiketi kaldırıldı.
-- Kulüp logosu kullanılmadı; yalnızca ScoutCore Elite logosu kullanıldı.
-- Mevcut veri/fonksiyon mantığına dokunulmadı; Supabase login ve veri akışı korunmuştur.
+Gerçek değiştirilen dosyalar:
+- src/app/page.tsx
+- src/app/globals.css
+- public/scoutcore-logo.jpeg
+- public/scoutcore-dashboard-reference.jpeg
+- public/scoutcore-login-reference.jpeg
+
+Yapılanlar:
+- Giriş ekranı tamamen yeniden tasarlandı.
+- Ana sayfa / dashboard tamamen yeni koyu neon UI tasarımına geçirildi.
+- Üstteki menüler sol dikey menüye taşındı.
+- Menü isimleri kullanıcı isteğine göre korundu: ANASAYFA, OPERASYON MERKEZİ, İZLENEN FUTBOLCULAR, KULÜP KADROSU, WORKSPACE, SCOUT YÖNETİMİ, TRANSFER KOMİTESİ, AJANDA, BİLDİRİMLER, AYARLAR, ÇIKIŞ.
+- Büyük ScoutCore Elite logosu ana sayfanın ortasına yerleştirildi.
+- Küçük ScoutCore Elite logosu sol üstte sabit menüye yerleştirildi.
+- Kulüp logosu kullanılmadı.
+- Supabase client, env, SQL ve database yapısına dokunulmadı.
 
 Test:
 - npm install çalıştırıldı.
 - npm run build çalıştırıldı.
 - Next.js production build başarılı tamamlandı.
-
-Not:
-- node_modules ve .next klasörleri ZIP içine dahil edilmedi. Kurulum için npm install, çalıştırmak için npm run dev veya npm run build kullanılabilir.
