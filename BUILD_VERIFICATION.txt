@@ -1,23 +1,17 @@
-ScoutCore Elite V16 Ultimate UI
+ScoutCore V16 Ultimate UI - Cleanup Build Verification
+Date: 2026-06-29
 
-Gerçek değiştirilen dosyalar:
-- src/app/page.tsx
-- src/app/globals.css
-- public/scoutcore-logo.jpeg
-- public/scoutcore-dashboard-reference.jpeg
-- public/scoutcore-login-reference.jpeg
+Requested cleanup applied:
+- Topbar season text removed.
+- Two right-side topbar buttons next to Onur Baş removed.
+- Sidebar footer copyright updated from 2024 to 2026.
+- Login screen season text removed.
+- Login screen scaled down so full form/status area fits better on one screen.
+- Observed Players position folder labels changed to uppercase format, e.g. KALECİ - 1 FUTBOLCU.
+- Supabase files and database logic were not changed.
 
-Yapılanlar:
-- Giriş ekranı tamamen yeniden tasarlandı.
-- Ana sayfa / dashboard tamamen yeni koyu neon UI tasarımına geçirildi.
-- Üstteki menüler sol dikey menüye taşındı.
-- Menü isimleri kullanıcı isteğine göre korundu: ANASAYFA, OPERASYON MERKEZİ, İZLENEN FUTBOLCULAR, KULÜP KADROSU, WORKSPACE, SCOUT YÖNETİMİ, TRANSFER KOMİTESİ, AJANDA, BİLDİRİMLER, AYARLAR, ÇIKIŞ.
-- Büyük ScoutCore Elite logosu ana sayfanın ortasına yerleştirildi.
-- Küçük ScoutCore Elite logosu sol üstte sabit menüye yerleştirildi.
-- Kulüp logosu kullanılmadı.
-- Supabase client, env, SQL ve database yapısına dokunulmadı.
+Build command:
+npm run build
 
-Test:
-- npm install çalıştırıldı.
-- npm run build çalıştırıldı.
-- Next.js production build başarılı tamamlandı.
+Result:
+Successful build. Next.js compiled successfully and generated static pages.
