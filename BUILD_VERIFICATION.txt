@@ -1,19 +1,15 @@
-ScoutCore V16 Ultimate UI Polish
-Date: 2026-06-29
+ScoutCore V16 Premium Dark Minimal UI
 
-Changes applied:
-- No functional logic changed.
-- Logo files untouched.
-- Supabase files untouched.
-- src/app/globals.css updated with premium dark polish overrides.
-- Green intensity reduced across UI.
-- Glow effects reduced.
-- Main dashboard background darkened and simplified.
-- Cards changed toward matte anthracite/fume borders with subtle green hover.
-- Sidebar active state changed to dark button with 4px green left indicator.
-- KPI titles kept neutral while numeric emphasis remains green.
+Yapılan işlem:
+- Login ekranında yalnızca arka plan Premium Dark Minimal tona alındı.
+- Ana ekranda arka plan yoğun görsel/neon etkilerden arındırıldı.
+- Charcoal/antrasit arka plan ve mat kart yüzeyleri uygulandı.
+- Yeşil vurgu daha yumuşak tona çekildi.
+- Glow ve neon efektleri azaltıldı.
+- Merkez logo, sol üst logo ve içerikler korunmuştur.
+- Fonksiyon, Supabase bağlantısı, veri modeli ve sayfa içerikleri değiştirilmemiştir.
 
-Build test:
-- npm ci --no-audit --no-fund
-- npm run build
-- Result: SUCCESS
+Test:
+- npm install çalıştırıldı.
+- npm run build çalıştırıldı.
+- Build sonucu: başarılı.
