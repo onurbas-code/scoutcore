@@ -1,8 +1,23 @@
-BUILD OK
+ScoutCore V20 Elite Dashboard Final
 
-Next.js production build completed successfully.
-V16 changes:
-- Topbar tek sıra hizalı.
-- İzlenen Futbolcular liste kartları tek satır/premium hizalı.
-- Düzenle/Sil ve skor kutuları sağa hizalı.
-- Supabase SQL gerektirmez.
+Yapılanlar:
+- Kullanıcının belirlediği ScoutCore Elite logosu public/scoutcore-logo.jpeg olarak eklendi.
+- Ana sayfa, verilen referans modele göre premium dashboard görünümüne dönüştürüldü.
+- Sol alttaki Onur Baş / Çorum FK profil kutusu ana sayfadan kaldırıldı.
+- Sol üstte Çıkış butonu eklendi.
+- Üst menü tek satır ve aynı hizada olacak şekilde düzenlendi.
+- Oyuncu Karşılaştırma bölümü üst menüye eklendi.
+- Oyuncu Karşılaştırma ekranında iki oyuncu seçme, oyuncu ekleme, düzenleme, çıkarma ve silme butonları eklendi.
+- Pozisyon dağılımı Türkçe seçeneklerle düzenlendi: Kaleci, Sağ Bek, Sol Bek, Orta Saha, Kanat, Forvet.
+- Ana sayfadaki İngilizce başlık ve kısaltmalar Türkçeleştirildi.
+- Yazıların satır taşmaması için nowrap / overflow / text-overflow düzenlemeleri yapıldı.
+- Oyuncu ekleme, düzenleme ve silme mevcut Supabase players tablosu üzerinden korunmuştur.
+- Yeni Supabase SQL gerekmiyor, çünkü yeni tablo veya kolon eklenmedi.
+
+Test:
+- npm install çalıştırıldı.
+- npm run build çalıştırıldı ve başarıyla tamamlandı.
+
+Not:
+- Supabase ortam değişkenleri Vercel'de mevcut haliyle kullanılmaya devam eder.
+- Gerekli environment variables: NEXT_PUBLIC_SUPABASE_URL, NEXT_PUBLIC_SUPABASE_ANON_KEY
