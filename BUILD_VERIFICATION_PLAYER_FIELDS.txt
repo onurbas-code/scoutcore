@@ -1,0 +1,11 @@
+Build verification: npm run build completed successfully.
+Changes:
+- Restored player photo upload field in İzlenen Futbolcular and Kulüp Kadrosu player editor.
+- Added Supabase Storage upload helper using player-photos bucket.
+- Added optional photo URL fallback field.
+- Added Doğum Tarihi label/date field in player editor.
+- Added Sözleşme Bitiş Tarihi field in player editor.
+- Added Sözleşme mini box after Yaş in İzlenen Futbolcular card.
+- Added Sözleşme column after Yaş in Kulüp Kadrosu table.
+- Changed observed player line format to MEVKİ - FUTBOLCU ADI - KULÜP - ÜLKE.
+- No Supabase SQL changes included.

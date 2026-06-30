@@ -19,3 +19,18 @@ export async function selectRows<T>(table:string, token:string, query="select=*&
 export async function insertRow<T>(table:string, token:string, payload:Record<string,unknown>) { const res=await fetch(`${supabaseUrl}/rest/v1/${table}`,{method:"POST",headers:{...h(token),Prefer:"return=representation"},body:JSON.stringify(cleanPayload(payload))}); const data=await res.json(); if(!res.ok) throw new Error(data?.message||`${table} kaydedilemedi.`); return data?.[0] as T; }
 export async function updateRow<T>(table:string, token:string, id:string, payload:Record<string,unknown>) { const res=await fetch(`${supabaseUrl}/rest/v1/${table}?id=eq.${id}`,{method:"PATCH",headers:{...h(token),Prefer:"return=representation"},body:JSON.stringify(cleanPayload(payload))}); const data=await res.json(); if(!res.ok) throw new Error(data?.message||`${table} güncellenemedi.`); return data?.[0] as T; }
 export async function deleteRow(table:string, token:string, id:string) { const res=await fetch(`${supabaseUrl}/rest/v1/${table}?id=eq.${id}`,{method:"DELETE",headers:h(token)}); if(!res.ok) throw new Error(`${table} silinemedi.`); }
+
+export async function uploadPlayerPhoto(token:string, file:File, playerName="player") {
+ const bucket = "player-photos";
+ const safeName = playerName.toLowerCase().replace(/[^a-z0-9ğüşöçıİĞÜŞÖÇ]+/gi,"-").replace(/^-+|-+$/g,"") || "player";
+ const ext = (file.name.split(".").pop() || "jpg").toLowerCase();
+ const path = `${Date.now()}-${safeName}.${ext}`;
+ const res = await fetch(`${supabaseUrl}/storage/v1/object/${bucket}/${path}`, {
+  method:"POST",
+  headers:{ apikey:publishableKey, Authorization:`Bearer ${token}`, "Content-Type": file.type || "application/octet-stream", "x-upsert":"true" },
+  body:file
+ });
+ const data = await res.json().catch(()=>null);
+ if(!res.ok) throw new Error(data?.message || `Fotoğraf yüklenemedi. Supabase Storage içinde ${bucket} bucket kontrol edilmeli.`);
+ return `${supabaseUrl}/storage/v1/object/public/${bucket}/${path}`;
+}
