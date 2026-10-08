@@ -1,0 +1,9 @@
+ScoutCore Elite V17 - Vercel npm ENOTFOUND düzeltmesi
+
+package-lock.json içindeki 36 dahili paket kaynağı, npm resmi kayıt adresi registry.npmjs.org olarak düzeltildi. Paket sürümleri ve integrity değerleri değiştirilmedi.
+
+GitHub deposunda mevcut dosyaları bu pakettekilerle değiştirin; özellikle package-lock.json güncellenmelidir. Vercel yeni commit sonrası otomatik deploy yapar.
+
+Supabase SQL kodunu yeniden çalıştırmanız gerekmez. Mevcut oyuncuları silen aktarımı yedek almadan çalıştırmayın.
+
+Not: Vercel üzerinde gerçek build testi yapılamadı.
