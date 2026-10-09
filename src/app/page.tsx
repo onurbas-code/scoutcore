@@ -21,19 +21,14 @@ type View = "Home"|"Operations"|"Players"|"Squad"|"Workspace"|"Scouting"|"Commit
 
 const tabs:{label:string;view:View;icon:string}[] = [
   {label:"ANASAYFA",view:"Home",icon:"⌂"},
-  {label:"OPERASYON MERKEZİ",view:"Operations",icon:"◎"},
-  {label:"İZLENEN FUTBOLCULAR",view:"Players",icon:"◉"},
   {label:"SCOUTING VERİ MERKEZİ",view:"ExcelHub",icon:"▤"},
   {label:"  TÜRKİYE LİGLERİ",view:"TurkeyHub",icon:"▸"},
   {label:"  GURBETÇİ FUTBOLCULAR",view:"DiasporaHub",icon:"▸"},
   {label:"TAKİP ETTİĞİM FUTBOLCULAR",view:"Followed",icon:"☆"},
   {label:"EXCEL’DEN FUTBOLCU EKLE",view:"BulkImport",icon:"＋"},
   {label:"KULÜP KADROSU",view:"Squad",icon:"◌"},
-  {label:"WORKSPACE",view:"Workspace",icon:"▱"},
-  {label:"SCOUT YÖNETİMİ",view:"Scouting",icon:"♙"},
   {label:"TRANSFER KOMİTESİ",view:"Committee",icon:"◍"},
   {label:"AJANDA",view:"Agenda",icon:"▦"},
-  {label:"BİLDİRİMLER",view:"Notifications",icon:"♢"},
   {label:"AYARLAR",view:"Settings",icon:"⚙"}
 ];
 const positions = ["Kaleci","Stoper","Sağ Bek","Sol Bek","6 Numara","8 Numara","10 Numara","Kanat","Forvet"];
