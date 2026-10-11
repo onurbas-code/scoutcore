@@ -1,4 +1,5 @@
 "use client";
+import TransfermarktImport from "./TransfermarktImport";
 import { useEffect, useMemo, useState } from "react";
 import { SupabaseSession, deleteRow, insertRow, login, register, selectRows, supabaseConfig, updateRow, uploadPlayerPhoto } from "@/lib/supabaseClient";
 
@@ -17,7 +18,7 @@ type CommitteeComment = { id:string; committee_id:string; author:string; comment
 type Workspace = { id:string; club_name:string; season_name:string; project_name:string; position_focus:string; target_count:number; status:string; note:string; created_at?:string };
 type Notification = { id?:string; title:string; detail:string; notification_type:string; severity?:"Bilgi"|"Uyarı"|"Önemli"|"Kritik"; is_read?:boolean; created_at?:string };
 
-type View = "Home"|"Operations"|"Players"|"Squad"|"Workspace"|"Scouting"|"Committee"|"Notifications"|"Agenda"|"Contact"|"Settings"|"ExcelHub"|"TurkeyHub"|"DiasporaHub"|"Followed"|"BulkImport"|"PlayerDetail"|"SquadDetail";
+type View = "Home"|"Operations"|"Players"|"Squad"|"Workspace"|"Scouting"|"Committee"|"Notifications"|"Agenda"|"Contact"|"Settings"|"ExcelHub"|"TurkeyHub"|"DiasporaHub"|"Followed"|"BulkImport"|"PlayerDetail"|"SquadDetail"|"TransfermarktImport";
 
 const tabs:{label:string;view:View;icon:string}[] = [
   {label:"ANASAYFA",view:"Home",icon:"⌂"},
@@ -26,6 +27,7 @@ const tabs:{label:string;view:View;icon:string}[] = [
   {label:"  GURBETÇİ FUTBOLCULAR",view:"DiasporaHub",icon:"▸"},
   {label:"TAKİP ETTİĞİM FUTBOLCULAR",view:"Followed",icon:"☆"},
   {label:"EXCEL’DEN FUTBOLCU EKLE",view:"BulkImport",icon:"＋"},
+  {label:"TRANSFERMARKT'TAN FUTBOLCU EKLE",view:"TransfermarktImport",icon:"🔗"},
   {label:"KULÜP KADROSU",view:"Squad",icon:"◌"},
   {label:"TRANSFER KOMİTESİ",view:"Committee",icon:"◍"},
   {label:"AJANDA",view:"Agenda",icon:"▦"},
@@ -81,7 +83,7 @@ export default function App(){
  return <div className="app"><Topbar view={view} go={go} logout={()=>{localStorage.removeItem("scoutcore_session");setSession(null)}} notifications={notifications}/>
    <main className="workspace">{notice&&<div className="notice">{notice}</div>}{loading&&<div className="notice">Veriler yükleniyor...</div>}
     {view==="BulkImport"&&<BulkImport players={players} token={session.access_token} refresh={loadAll} back={back}/>} {view==="TurkeyHub"&&<RegionalHub kind="turkiye" players={players} token={session.access_token} refresh={loadAll} back={back}/>} {view==="DiasporaHub"&&<RegionalHub kind="gurbetci" players={players} token={session.access_token} refresh={loadAll} back={back}/>} {view==="Followed"&&<Followed players={players} token={session.access_token} refresh={loadAll} back={back} openPlayer={(p:Player)=>openPlayer(p,"PlayerDetail")}/>} {view==="ExcelHub"&&<ExcelHub players={players} token={session.access_token} refresh={loadAll} back={back}/>} {view==="Home"&&<Home go={go} players={players} team={team} scouts={scouts} agenda={agenda} reports={reports} committee={committee} notifications={notifications}/>} {view==="Operations"&&<Operations players={players} team={team} scouts={scouts} agenda={agenda} reports={reports} committee={committee} notifications={notifications} back={back}/>} {view==="Players"&&<ObservedPlayers players={players} openPlayer={(p)=>openPlayer(p,"PlayerDetail")} add={()=>addPlayer("scout")} edit={editPlayer} remove={removePlayer} back={back}/>} {view==="PlayerDetail"&&selected&&<PlayerDetail p={selected} reports={reports.filter(r=>r.player_id===selected.id)} back={back} edit={editPlayer}/>} {view==="Squad"&&<Squad players={team} openPlayer={(p)=>openPlayer(p,"SquadDetail")} add={()=>addPlayer("team")} edit={editPlayer} remove={removePlayer} back={back}/>} {view==="SquadDetail"&&selected&&<SquadDetail p={selected} back={back} edit={editPlayer}/>} {view==="Workspace"&&<WorkspaceView workspaces={workspaces} players={players} token={session.access_token} refresh={loadAll} setNotice={setNotice} back={back}/>} {view==="Scouting"&&<ScoutManagement scouts={scouts} token={session.access_token} refresh={loadAll} setNotice={setNotice} back={back}/>} {view==="Committee"&&<CommitteeView players={all} committee={committee} comments={committeeComments} token={session.access_token} refresh={loadAll} setNotice={setNotice} back={back}/>} {view==="Agenda"&&<AgendaView agenda={agenda} token={session.access_token} refresh={loadAll} setNotice={setNotice} back={back}/>} {view==="Notifications"&&<NotificationCenter notifications={notifications} back={back}/>} {view==="Contact"&&<Contact back={back}/>} {view==="Settings"&&<Settings players={all} token={session.access_token} refresh={loadAll} back={back}/>} </main>{editing&&<PlayerEditor player={editing} scope={editScope} token={session.access_token} save={savePlayer} cancel={()=>setEditing(null)}/>}</div>
-}
+{view==="TransfermarktImport"&&<TransfermarktImport/>}}
 function Shell({children}:{children:React.ReactNode}){return <div className="app"><main className="workspace">{children}</main></div>}
 function Topbar({view,go,logout,notifications}:any){const unread=(notifications||[]).filter((n:Notification)=>!n.is_read).length||8; return <><aside className="sidebar"><button className="brand" onClick={()=>go("Home")}><img src="/scoutcore-logo.jpeg"/></button><nav className="tabs">{tabs.map(t=><button key={t.view} className={view===t.view?"tab active":"tab"} onClick={()=>go(t.view)}><span className="tabIcon">{t.icon}</span><span>{t.label}</span>{t.view==="Notifications"&&<em>{unread}</em>}</button>)}<button className="tab logout" onClick={logout}><span className="tabIcon">⇱</span><span>ÇIKIŞ</span></button></nav><div className="sideFoot"><b>SCOUTCORE ELITE V16</b><span>© 2026 ScoutCore Elite</span></div></aside><header className="topbar"><div className="pageTitle"><button className="hamb">☰</button><h1>{viewLabel(view)}</h1></div><div className="topTools"><strong>Onur Baş</strong><small>⌄</small></div></header></>}
 function Back({onClick}:{onClick:()=>void}){return <button className="backBtn" onClick={onClick}>← Geri</button>}
