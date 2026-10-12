@@ -38,6 +38,31 @@ const positionOrder:Record<string,number>={"Kaleci":1,"Stoper":2,"Sağ Bek":3,"S
 const today = new Date().toISOString().slice(0,10);
 const weekAgo = new Date(Date.now()-7*24*60*60*1000).toISOString().slice(0,10);
 const emptyPlayer:Player = {id:"",scope:"scout",name:"",birth_date:null,age:0,position:"",club:"",country:"",nationality:"",foot:"",height:"",contract_end:null,matches:0,goals:0,assists:0,minutes:0,market_value:"",salary:"",scout_score:0,potential_score:0,stars:0,tag:"Takip",favorite:false,status:"Takip",shortlist:"",photo_url:"",report:"",strengths:"",weaknesses:"",action_note:"",video_url:"",external_link:"",league:"",passport:"",player_type:"Normal",speed:5,technique:5,passing:5,defending:5,physical:5,aerial:5,decision_making:5,mental:5,yellow_cards:0,red_cards:0,injury_status:"",injury_history:"",training_score:0,performance_score:0,development_note:""};
+/** Decode HTML character references introduced by legacy imports (e.g. &#304; => İ).
+ * Only text fields are transformed; IDs, dates and links remain untouched.
+ * Decode at the data boundary so search, filters, details and editing agree.
+ */
+function decodeLegacyEntities(value:string):string {
+ if(!value || !value.includes("&"))return value;
+ const named:Record<string,string>={amp:"&",lt:"<",gt:">",quot:'"',apos:"'",nbsp:" ",uuml:"ü",Uuml:"Ü",ouml:"ö",Ouml:"Ö",ccedil:"ç",Ccedil:"Ç",agrave:"à",eacute:"é",Eacute:"É",aacute:"á",Aacute:"Á",ntilde:"ñ",Ntilde:"Ñ"};
+ let current=value;
+ for(let i=0;i<3;i++){
+  const next=current.replace(/&(?:#(x[0-9a-fA-F]+|[0-9]+)|([a-zA-Z]+));/g,(match,_numeric,word)=>{
+   if(word)return Object.prototype.hasOwnProperty.call(named,word)?named[word]:match;
+   const cp=String(_numeric).toLowerCase().startsWith("x")?parseInt(String(_numeric).slice(1),16):Number(_numeric);
+   return Number.isInteger(cp)&&cp>0&&cp<=0x10ffff&&!(cp>=0xd800&&cp<=0xdfff)?String.fromCodePoint(cp):match;
+  });
+  if(next===current)break;
+  current=next;
+ }
+ return current;
+}
+const playerTextFields=["name","position","club","country","nationality","foot","height","market_value","salary","tag","status","shortlist","report","strengths","weaknesses","action_note","league","passport","player_type","development_note"] as const;
+function cleanPlayerText<T extends Player>(player:T):T {
+ const result={...player} as T;
+ for(const field of playerTextFields){const v=result[field];if(typeof v==="string")(result as any)[field]=decodeLegacyEntities(v)}
+ return result;
+}
 function n(v:any){return Number(v)||0}
 function clamp10(v:any){return Math.max(0,Math.min(10,n(v)))}
 function trDate(date?:string|null){if(!date)return "-"; const d=new Date(date); return isNaN(d.getTime())?String(date):d.toLocaleDateString("tr-TR",{day:"2-digit",month:"2-digit",year:"numeric"})}
@@ -49,7 +74,7 @@ function isRecent(date?:string){return Boolean(date && date.slice(0,10)>=weekAgo
 function sortSquad(list:Player[]){return [...list].sort((a,b)=>(positionOrder[a.position]||99)-(positionOrder[b.position]||99)||a.name.localeCompare(b.name,"tr"));}
 function sortObserved(list:Player[]){return [...list].sort((a,b)=>n(b.scout_score)-n(a.scout_score)||n(b.stars)-n(a.stars)||n(b.potential_score)-n(a.potential_score));}
 function safePlayerPayload(p:Player, scope:"scout"|"team"){
-  const out:any = {...p, scope};
+  const out:any = {...cleanPlayerText(p), scope};
   delete out.id; delete out.created_at; delete out.updated_at;
   out.birth_date = out.birth_date || null;
   out.contract_end = out.contract_end || null;
@@ -69,7 +94,7 @@ export default function App(){
  useEffect(()=>{if(session?.access_token)loadAll()},[session?.access_token]);
  async function loadAll(){ if(!session?.access_token)return; setLoading(true); setNotice(""); try{const [p,s,a,r,c,w,nn,cc]=await Promise.all([
    selectRows<Player>("players",session.access_token), selectRows<Scout>("scouts",session.access_token), selectRows<Agenda>("agenda",session.access_token,"select=*&order=plan_date.asc"), selectRows<Report>("scout_reports",session.access_token), selectRows<Committee>("transfer_committee",session.access_token).catch(()=>[]), selectRows<Workspace>("workspaces",session.access_token).catch(()=>[]), selectRows<Notification>("notifications",session.access_token).catch(()=>[]), selectRows<CommitteeComment>("transfer_committee_comments",session.access_token).catch(()=>[])
-  ]); setPlayers(p.filter(x=>x.scope==="scout")); setTeam(p.filter(x=>x.scope==="team")); setScouts(s); setAgenda(a); setReports(r); setCommittee(c); setWorkspaces(w); setCommitteeComments(cc); setNotifications([...generatedNotifications(p,s,r),...nn]); }catch(e:any){setNotice(e.message||"Veriler yüklenemedi.")} finally{setLoading(false)} }
+  ]); setPlayers(p.filter(x=>x.scope==="scout").map(cleanPlayerText)); setTeam(p.filter(x=>x.scope==="team").map(cleanPlayerText)); setScouts(s); setAgenda(a); setReports(r); setCommittee(c); setWorkspaces(w); setCommitteeComments(cc); setNotifications([...generatedNotifications(p,s,r),...nn]); }catch(e:any){setNotice(e.message||"Veriler yüklenemedi.")} finally{setLoading(false)} }
  function go(v:View){setPrevView(view); setView(v)}
  function back(){setView(prevView||"Home")}
  function openPlayer(p:Player, detail:View){setSelected(p); setPrevView(view); setView(detail)}
@@ -126,7 +151,7 @@ function tmUrl(value:unknown):string {
  try {const u=new URL(raw);return /^https:$/.test(u.protocol)&&/(^|\.)transfermarkt\.[a-z.]+$/i.test(u.hostname)&&/\/spieler\/\d+/.test(u.pathname)?u.origin+u.pathname:""}catch{return ""}
 }
 function tmKey(value:unknown):string {
- return String(value||"").toLocaleUpperCase("tr-TR").normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^A-Z0-9]/g,"");
+ return decodeLegacyEntities(String(value||"")).toLocaleUpperCase("tr-TR").normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^A-Z0-9]/g,"");
 }
 const referenceLinks=new Map<string,{url:string;birth:string|null}>();
 const ambiguousNames=new Set<string>();
@@ -167,7 +192,7 @@ function ExcelHub({players,token,refresh,back,edit,remove}:any){
  const filtered=source.filter(p=>{ 
   const positionMatches=pos==="Tümü"||canonicalPosition(p.position)===pos;
   const listMatches=list==="Tümü"||(list==="Kontenjan 2003+"?is2003Plus(p.birth_date):list==="Sözleşmesi Bitenler"?!!p.contract_end&&contractDays(p.contract_end)>=0&&contractDays(p.contract_end)<=365:list==="Uygun Değil"?p.status==="Kırmızı":normalizeSearch(p.shortlist)===normalizeSearch(list));
-  const searchable=normalizeSearch([p.name,p.club,p.nationality,p.position,p.external_link].join(" "));
+  const searchable=normalizeSearch([p.name,p.club,p.nationality,p.position,p.external_link].map(x=>decodeLegacyEntities(String(x||""))).join(" "));
   const words=normalizeSearch(query).split(" ").filter(Boolean);
   return positionMatches&&listMatches&&words.every(word=>searchable.includes(word));
  });
