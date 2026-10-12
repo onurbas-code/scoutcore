@@ -15,6 +15,8 @@ export async function readTransfermarkt(url:string):Promise<{player:TMPlayer;war
  const name=strip(html.match(/<h1\b[^>]*>([\s\S]*?)<\/h1>/i)?.[1]||'')||title.replace(/\s*[-|].*$/,'').trim();const cleanName=name.replace(/^#?\d+\s+/g,"").replace(/\s*\|.*$/,"").trim();if(cleanName&&cleanName.length<130)player.name=cleanName;
  const description=meta(html,'og:description')||meta(html,'description');
  const born=label(html,['Date of birth/Age','Date of birth','Geburtsdatum/Alter','Doğum tarihi/Yaş','Doğum tarihi']);const birth=date(born);if(birth&&birth<new Date().toISOString().slice(0,10)&&Number(birth.slice(0,4))>=1940)player.birth_date=birth;
+ // Structured metadata can contain a date even when the visible table layout changes.
+ if(!player.birth_date){const jsonLd=[...html.matchAll(/<script[^>]*type=["']application\/ld\+json["'][^>]*>([\s\S]*?)<\/script>/gi)];for(const item of jsonLd){try{const data=JSON.parse(item[1]);const objects=Array.isArray(data)?data:[data];for(const obj of objects){if(typeof obj?.birthDate==='string'){const parsed=date(obj.birthDate);if(parsed&&parsed<new Date().toISOString().slice(0,10)&&Number(parsed.slice(0,4))>=1940){player.birth_date=parsed;break}}}}catch{}if(player.birth_date)break}}
  const height=label(html,['Height','Größe','Boy']);if(height)player.height=height;
  const nationality=label(html,['Citizenship','Staatsbürgerschaft','Uyruk']);if(nationality)player.nationality=nationality;
  const club=label(html,['Current club','Aktueller Verein','Güncel kulüp']);if(club)player.club=club;

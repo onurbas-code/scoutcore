@@ -9,17 +9,17 @@ async function entities(ids:string[]){if(!ids.length)return {} as Record<string,
 function time(e:Entity,k:string){const v=prop(e,k)[0];const match=typeof v?.time==='string'?v.time.match(/^[+-](\d{4})-(\d\d)-(\d\d)/):null;return match?`${match[1]}-${match[2]}-${match[3]}`:undefined}
 function quantity(e:Entity,k:string){const v=prop(e,k)[0];return typeof v?.amount==='string'?Number(v.amount):undefined}
 function label(e?:Entity){return e?.labels?.tr?.value||e?.labels?.en?.value||''}
-export async function readWikidata(name:string,clubHint?:string){
+export async function readWikidata(name:string,clubHint?:string,verifiedEntityId?:string){
  const warnings:string[]=[];const player:Record<string,string|number>={};
  if(name.trim().length<4)return {player,warnings:['Wikidata araması için yeterli oyuncu adı bulunamadı.']};
- const j=await json(api({action:'wbsearchentities',search:name,language:'en',uselang:'en',type:'item',limit:'8'}));
+ const j=verifiedEntityId?{search:[{id:verifiedEntityId,label:name,description:'footballer'}]}:await json(api({action:'wbsearchentities',search:name,language:'en',uselang:'en',type:'item',limit:'12'}));
  const candidates=(j.search||[]) as Array<{id:string;label:string;description?:string}>;
- const exact=candidates.filter(c=>normalized(c.label)===normalized(name));
+ const exact=candidates.filter(c=>verifiedEntityId||normalized(c.label)===normalized(name));
  if(!exact.length)return {player,warnings:[`Wikidata üzerinde ${name} için birebir isim eşleşmesi bulunamadı.`]};
  const items=await entities(exact.map(x=>x.id));
- const footballers=exact.filter(c=>{const e=items[c.id];return e&&[...prop(e,'P106'),...prop(e,'P39')].some(v=>entityId(v)==='Q937857')||/footballer|soccer player|futbolcu/i.test(c.description||'')});
- const pool=footballers.length?footballers:exact;
- if(pool.length!==1)return {player,warnings:[`Wikidata üzerinde ${name} için ${pool.length} olası kayıt var; yanlış oyuncu seçilmedi.`]};
+ const footballers=exact.filter(c=>{const e=items[c.id];return !!e&&([ ...prop(e,'P106')].some(v=>entityId(v)==='Q937857')||/footballer|soccer player|futbolcu/i.test(c.description||''));});
+ const pool=footballers;
+ if(pool.length!==1)return {player,warnings:[`Wikidata üzerinde ${name} için kesin futbolcu eşleşmesi bulunamadı (aday: ${pool.length}); yanlış kişi seçilmedi.`]};
  const e=items[pool[0].id];if(!e)return {player,warnings:['Wikidata oyuncu kaydı okunamadı.']};
  // Entity labels and claims are independently sourced. Current team (P54) can contain historical teams; never pick the first as current.
  player.name=pool[0].label;
