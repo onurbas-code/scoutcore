@@ -9,7 +9,7 @@ function date(v:string){if(!v)return null;const x=Number(v);if(!Number.isNaN(x)&
  const m=v.trim().match(/^(\d{1,2})[./-](\d{1,2})[./-](\d{4})$/);
  if(m){const d=Number(m[1]),mo=Number(m[2]),y=Number(m[3]);const dt=new Date(Date.UTC(y,mo-1,d));if(dt.getUTCFullYear()===y&&dt.getUTCMonth()===mo-1&&dt.getUTCDate()===d)return `${y}-${String(mo).padStart(2,'0')}-${String(d).padStart(2,'0')}`;}
  return null}
-const allowedSheets:Record<string,string>={"Kaleciler":"Kaleci","Stoperler":"Stoper","Sağ Bekler":"Sağ Bek","Sol Bekler":"Sol Bek","6 Numaralar":"6 Numara","8 Numaralar":"8 Numara","10 Numaralar":"10 Numara","Kanatlar":"Kanat","Forvetler":"Forvet"};
+const allowedSheets:Record<string,string>={"Kaleciler":"Kaleci","Stoperler":"Stoper","Sağ Bekler":"Sağ Bek","Sol Bekler":"Sol Bek","6 Numaralar":"Ön Libero","8 Numaralar":"Merkez Orta Saha","10 Numaralar":"10 Numara","Kanatlar":"Kanat","Forvetler":"Santrafor"};
 function parse(buf:Buffer){
  const files=filesOf(buf),wb=files['xl/workbook.xml'];if(!wb)throw Error('Excel çalışma kitabı bulunamadı.');
  const rels=files['xl/_rels/workbook.xml.rels']||'';const relMap:Record<string,string>={};
