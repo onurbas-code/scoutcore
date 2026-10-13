@@ -14,35 +14,43 @@ function parse(buf:Buffer){
  const files=filesOf(buf),wb=files['xl/workbook.xml'];if(!wb)throw Error('Excel çalışma kitabı bulunamadı.');
  const rels=files['xl/_rels/workbook.xml.rels']||'';const relMap:Record<string,string>={};
  for(const m of rels.matchAll(/<Relationship\b([^>]*?)\/?\s*>/g)){const a=attrs(m[1]);relMap[a.Id]=a.Target?.replace(/^\//,'')||''}
- const ss:string[]=[];for(const m of (files['xl/sharedStrings.xml']||'').matchAll(/<si\b[^>]*>([\s\S]*?)<\/si>/g))ss.push(Array.from(m[1].matchAll(/<t(?:\s[^>]*)?>([\s\S]*?)<\/t>/g)).map(x=>decode(x[1])).join(''));
+ const ss:string[]=[];for(const m of (files['xl/sharedStrings.xml']||'').matchAll(/<(?:\w+:)?si\b[^>]*>([\s\S]*?)<\/(?:\w+:)?si>/g))ss.push(Array.from(m[1].matchAll(/<(?:\w+:)?t(?:\s[^>]*)?>([\s\S]*?)<\/(?:\w+:)?t>/g)).map(x=>decode(x[1])).join(''));
  const out:any[]=[];const seen=new Set<string>();
- for(const sm of wb.matchAll(/<sheet\b([^>]*?)\/?\s*>/g)){
-  const sh=attrs(sm[1]),sheet=sh.name||'';if(!allowedSheets[sheet]&&sheet!=="Futbolcular")continue;
+ for(const sm of wb.matchAll(/<(?:\w+:)?sheet\b([^>]*?)\/?\s*>/g)){
+  const sh=attrs(sm[1]),sheet=sh.name||'';if(!allowedSheets[sheet]&&sheet!=="Futbolcular"&&sheet!=="Sheet1")continue;
   let path=relMap[sh['r:id']]||'';if(!path)continue;
   if(path.startsWith('/'))path=path.replace(/^\//,'');else if(!path.startsWith('xl/'))path='xl/'+path.replace(/^\.\.\//,'');
   const xml=files[path];if(!xml)continue;let headers:Record<string,string>={};
-  for(const rm of xml.matchAll(/<row\b([^>]*?)>([\s\S]*?)<\/row>/g)){
-   const row=Number(attrs(rm[1]).r);if(row<(sheet==="Futbolcular"?1:3))continue;
+  for(const rm of xml.matchAll(/<(?:\w+:)?row\b([^>]*?)>([\s\S]*?)<\/(?:\w+:)?row>/g)){
+   const row=Number(attrs(rm[1]).r);if(row<((sheet==="Futbolcular"||sheet==="Sheet1")?1:3))continue;
    const cells:Record<string,string>={};
-   for(const cm of rm[2].matchAll(/<c\b([^>]*?)(?:\/>|>([\s\S]*?)<\/c>)/g)){
+   for(const cm of rm[2].matchAll(/<(?:\w+:)?c\b([^>]*?)(?:\/>|>([\s\S]*?)<\/(?:\w+:)?c>)/g)){
     const a=attrs(cm[1]),col=(a.r||'').match(/^[A-Z]+/)?.[0];if(!col)continue;
-    const content=cm[2]||'',v=content.match(/<v>([\s\S]*?)<\/v>/)?.[1]||'',inline=content.match(/<is>([\s\S]*?)<\/is>/)?.[1]||'';
+    const content=cm[2]||'',v=content.match(/<(?:\w+:)?v>([\s\S]*?)<\/(?:\w+:)?v>/)?.[1]||'',inline=content.match(/<(?:\w+:)?is>([\s\S]*?)<\/(?:\w+:)?is>/)?.[1]||'';
     const value=a.t==='s'?ss[Number(v)]||'':a.t==='inlineStr'?txt(inline):decode(v);
     if(value&&value!=='None')cells[col]=value;
    }
-   if(row===(sheet==="Futbolcular"?1:3)){headers=cells;continue}if(row<(sheet==="Futbolcular"?2:4))continue;
-   if(sheet==="Futbolcular"){
-    const first=(cells.A||"").trim(),last=(cells.B||"").trim(),name=[first,last].filter(Boolean).join(" ").trim();
-    if(!name||name==="-"||/^(ad|soyad)$/i.test(name))continue;
-    const birth=date(cells.C||""),link=(cells.G||"").trim();
+   if(row===((sheet==="Futbolcular"||sheet==="Sheet1")?1:3)){headers=cells;continue}if(row<((sheet==="Futbolcular"||sheet==="Sheet1")?2:4))continue;
+   if(sheet==="Futbolcular"||sheet==="Sheet1"){
+    // Başlık temelli okuma: hem eski 7 sütunlu hem de ülke eklenmiş 8 sütunlu format.
+    const clean=(v:string)=>decode(String(v||"")).trim();
+    const normalized=(v:string)=>clean(v).toLocaleLowerCase("tr-TR").normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/ı/g,"i").replace(/[^a-z0-9]/g,"");
+    const col=(...names:string[])=>{const keys=Object.keys(headers);const match=keys.find(k=>names.some(n=>normalized(headers[k])===normalized(n)));return match?clean(cells[match]||""):""};
+    const first=col("Ad","İsim"),last=col("Soyad","Soyadı"),name=[first,last].filter(Boolean).join(" ").trim();
+    if(!name||name==="-"||normalized(name)==="adsoyad")continue;
+    const birth=date(col("Doğum Tarihi","Dogum Tarihi"));
+    const link=col("Transfermarkt Profil","Transfermarkt Profili","Transfermarkt Linki","Transfermarkt","Profil Linki");
     const key=name.toLocaleLowerCase("tr-TR")+"|"+(birth||"");if(seen.has(key))continue;seen.add(key);
-    out.push({name,position:cells.E||"Orta Saha",birth_date:birth,nationality:"",country:"",club:"",contract_end:date(cells.F||""),status:"Takip",report:"",player_type:"",external_link:/^https?:\/\/(?:www\.)?transfermarkt\.[^\s]+\/.*\/spieler\/\d+/i.test(link)?link:"",excel_sheet:sheet,excel_row:row,excel_fields:Object.fromEntries(Object.entries(cells).map(([k,v])=>[headers[k]||k,v]))});
+    const position=col("Mevki","Pozisyon")||"";
+    const country=col("Ülke","Uyruk","Milliyet");
+    const contract=date(col("Sözleşme Bitiş Tarihi","Sözleşme Bitişi","Sözleşme Bitiş"));
+    out.push({name,position,birth_date:birth,nationality:country,country,club:col("Kulüp","Kulübü","Takım"),contract_end:contract,status:"Takip",report:"",player_type:"",external_link:/^https?:\/\/(?:www\.)?transfermarkt\.[^\s]+\/.*\/spieler\/\d+/i.test(link)?link:"",excel_sheet:sheet,excel_row:row,excel_fields:Object.fromEntries(Object.entries(cells).map(([k,v])=>[headers[k]||k,v]))});
     continue;
    }
    const name=(cells.B||'').trim();if(!name||/^(adı soyadı|sıra no|none)$/i.test(name)||name==='0')continue;
    const birth=date(cells.D||''),key=name.toLocaleLowerCase('tr-TR')+'|'+(birth||'');if(seen.has(key))continue;seen.add(key);
    const profile=cells.G||'',report=cells.K||'', link=Object.values(cells).find(v=>/https?:\/\/(www\.)?transfermarkt\./i.test(v))||'';
-   out.push({name,position:cells.F||allowedSheets[sheet],birth_date:birth,nationality:cells.C||'',country:cells.C||'',club:cells.H||'',contract_end:date(cells.I||''),status:cells.J||'',report,player_type:cells.L||'',external_link:link,excel_sheet:sheet,excel_row:row,excel_fields:Object.fromEntries(Object.entries(cells).map(([k,v])=>[headers[k]||k,v]))});
+   out.push({name,position:cells.F||allowedSheets[sheet],birth_date:birth,nationality:cells.C||'',country:cells.C||'',club:cells.H||'',contract_end:date(cells.I||''),status:cells.J||'',report,player_type:'',external_link:link,excel_sheet:sheet,excel_row:row,excel_fields:Object.fromEntries(Object.entries(cells).map(([k,v])=>[headers[k]||k,v]))});
   }
  }
  return out;
