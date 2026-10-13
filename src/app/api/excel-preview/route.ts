@@ -5,7 +5,10 @@ const decode=(s:string)=>{let v=s;for(let i=0;i<3;i++){const next=v.replace(/&(?
 function attrs(s:string){const o:Record<string,string>={};for(const m of s.matchAll(/([\w:.-]+)="([^"]*)"/g))o[m[1]]=decode(m[2]);return o}
 function filesOf(buf:Buffer){const files:Record<string,string>={};let e=-1;for(let i=buf.length-22;i>=Math.max(0,buf.length-65557);i--){if(buf.readUInt32LE(i)===0x06054b50){e=i;break}}if(e<0)throw Error('Geçerli XLSX/ZIP dosyası değil.');let off=buf.readUInt32LE(e+16);const n=buf.readUInt16LE(e+10);for(let i=0;i<n;i++){if(buf.readUInt32LE(off)!==0x02014b50)break;const method=buf.readUInt16LE(off+10),size=buf.readUInt32LE(off+20),len=buf.readUInt16LE(off+28),ex=buf.readUInt16LE(off+30),co=buf.readUInt16LE(off+32),loc=buf.readUInt32LE(off+42),name=buf.subarray(off+46,off+46+len).toString();off+=46+len+ex+co;if(!name.endsWith('.xml')&&!name.endsWith('.rels'))continue;if(buf.readUInt32LE(loc)!==0x04034b50)continue;const start=loc+30+buf.readUInt16LE(loc+26)+buf.readUInt16LE(loc+28);const b=buf.subarray(start,start+size);files[name]=(method===8?inflateRawSync(b):b).toString('utf8')}return files}
 function txt(v:string){return decode(v.replace(/<[^>]+>/g,''))}
-function date(v:string){if(!v)return null;const x=Number(v);if(!Number.isNaN(x)&&x>20000&&x<100000)return new Date(Date.UTC(1899,11,30)+x*86400000).toISOString().slice(0,10);return /^\d{4}-\d{2}-\d{2}$/.test(v)?v:null}
+function date(v:string){if(!v)return null;const x=Number(v);if(!Number.isNaN(x)&&x>20000&&x<100000)return new Date(Date.UTC(1899,11,30)+x*86400000).toISOString().slice(0,10);if(/^\d{4}-\d{2}-\d{2}$/.test(v))return v;
+ const m=v.trim().match(/^(\d{1,2})[./-](\d{1,2})[./-](\d{4})$/);
+ if(m){const d=Number(m[1]),mo=Number(m[2]),y=Number(m[3]);const dt=new Date(Date.UTC(y,mo-1,d));if(dt.getUTCFullYear()===y&&dt.getUTCMonth()===mo-1&&dt.getUTCDate()===d)return `${y}-${String(mo).padStart(2,'0')}-${String(d).padStart(2,'0')}`;}
+ return null}
 const allowedSheets:Record<string,string>={"Kaleciler":"Kaleci","Stoperler":"Stoper","Sağ Bekler":"Sağ Bek","Sol Bekler":"Sol Bek","6 Numaralar":"6 Numara","8 Numaralar":"8 Numara","10 Numaralar":"10 Numara","Kanatlar":"Kanat","Forvetler":"Forvet"};
 function parse(buf:Buffer){
  const files=filesOf(buf),wb=files['xl/workbook.xml'];if(!wb)throw Error('Excel çalışma kitabı bulunamadı.');
@@ -14,12 +17,12 @@ function parse(buf:Buffer){
  const ss:string[]=[];for(const m of (files['xl/sharedStrings.xml']||'').matchAll(/<si\b[^>]*>([\s\S]*?)<\/si>/g))ss.push(Array.from(m[1].matchAll(/<t(?:\s[^>]*)?>([\s\S]*?)<\/t>/g)).map(x=>decode(x[1])).join(''));
  const out:any[]=[];const seen=new Set<string>();
  for(const sm of wb.matchAll(/<sheet\b([^>]*?)\/?\s*>/g)){
-  const sh=attrs(sm[1]),sheet=sh.name||'';if(!allowedSheets[sheet])continue;
+  const sh=attrs(sm[1]),sheet=sh.name||'';if(!allowedSheets[sheet]&&sheet!=="Futbolcular")continue;
   let path=relMap[sh['r:id']]||'';if(!path)continue;
   if(path.startsWith('/'))path=path.replace(/^\//,'');else if(!path.startsWith('xl/'))path='xl/'+path.replace(/^\.\.\//,'');
   const xml=files[path];if(!xml)continue;let headers:Record<string,string>={};
   for(const rm of xml.matchAll(/<row\b([^>]*?)>([\s\S]*?)<\/row>/g)){
-   const row=Number(attrs(rm[1]).r);if(row<3)continue;
+   const row=Number(attrs(rm[1]).r);if(row<(sheet==="Futbolcular"?1:3))continue;
    const cells:Record<string,string>={};
    for(const cm of rm[2].matchAll(/<c\b([^>]*?)(?:\/>|>([\s\S]*?)<\/c>)/g)){
     const a=attrs(cm[1]),col=(a.r||'').match(/^[A-Z]+/)?.[0];if(!col)continue;
@@ -27,7 +30,15 @@ function parse(buf:Buffer){
     const value=a.t==='s'?ss[Number(v)]||'':a.t==='inlineStr'?txt(inline):decode(v);
     if(value&&value!=='None')cells[col]=value;
    }
-   if(row===3){headers=cells;continue}if(row<4)continue;
+   if(row===(sheet==="Futbolcular"?1:3)){headers=cells;continue}if(row<(sheet==="Futbolcular"?2:4))continue;
+   if(sheet==="Futbolcular"){
+    const first=(cells.A||"").trim(),last=(cells.B||"").trim(),name=[first,last].filter(Boolean).join(" ").trim();
+    if(!name||name==="-"||/^(ad|soyad)$/i.test(name))continue;
+    const birth=date(cells.C||""),link=(cells.G||"").trim();
+    const key=name.toLocaleLowerCase("tr-TR")+"|"+(birth||"");if(seen.has(key))continue;seen.add(key);
+    out.push({name,position:cells.E||"Orta Saha",birth_date:birth,nationality:"",country:"",club:"",contract_end:date(cells.F||""),status:"Takip",report:"",player_type:"",external_link:/^https?:\/\/(?:www\.)?transfermarkt\.[^\s]+\/.*\/spieler\/\d+/i.test(link)?link:"",excel_sheet:sheet,excel_row:row,excel_fields:Object.fromEntries(Object.entries(cells).map(([k,v])=>[headers[k]||k,v]))});
+    continue;
+   }
    const name=(cells.B||'').trim();if(!name||/^(adı soyadı|sıra no|none)$/i.test(name)||name==='0')continue;
    const birth=date(cells.D||''),key=name.toLocaleLowerCase('tr-TR')+'|'+(birth||'');if(seen.has(key))continue;seen.add(key);
    const profile=cells.G||'',report=cells.K||'', link=Object.values(cells).find(v=>/https?:\/\/(www\.)?transfermarkt\./i.test(v))||'';
