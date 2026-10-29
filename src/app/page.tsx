@@ -217,9 +217,9 @@ function ExcelHub({players,token,refresh,back,edit,remove}:any){
  function exportExcel(onlyFiltered:boolean){
   const chosen=onlyFiltered?filtered:source;
   if(!chosen.length){setMessage("Dışa aktarılacak futbolcu bulunamadı.");return;}
-  const fullById=new Map((players as Player[]).map(p=>[p.id,p]));
+  const fullById=new Map<string,Player>((players as Player[]).map(p=>[p.id,p]));
   const headers=["Adı Soyadı","Doğum Tarihi","Yaş","Mevki","Kulübü","Ülke","Uyruk","Sözleşme Bitiş","Piyasa Değeri","Maç","Gol","Asist","Dakika","Durum","Transfer Listesi","Transfermarkt Profil","Scout Raporu","Güçlü Yönler","Zayıf Yönler","Not","Kaynak Bölüm"];
-  const rows=chosen.map(p=>{const full=fullById.get(p.id||"");const birth=p.birth_date||"";const age=full?.age|| (birth?/^\d{4}-\d{2}-\d{2}/.test(birth)?Math.max(0,new Date().getFullYear()-Number(birth.slice(0,4))-(new Date().toISOString().slice(5,10)<birth.slice(5,10)?1:0)):"":"");return [p.name,birth,age,canonicalPosition(p.position),p.club,full?.country||"",p.nationality,p.contract_end||"",full?.market_value||"",full?.matches??"",full?.goals??"",full?.assists??"",full?.minutes??"",p.status,p.shortlist||"",resolvedTmLink(full||p as Player).url||p.external_link||"",full?.report||"",full?.strengths||"",full?.weaknesses||"",full?.action_note||"",full?.tag||""]});
+  const rows=chosen.map(p=>{const full=fullById.get(p.id||"");const birth=p.birth_date||"";const age=full?.age|| (birth?/^\d{4}-\d{2}-\d{2}/.test(birth)?Math.max(0,new Date().getFullYear()-Number(birth.slice(0,4))-(new Date().toISOString().slice(5,10)<birth.slice(5,10)?1:0)):"":"");return [p.name,birth,age,canonicalPosition(p.position),p.club,full?.country||"",p.nationality,p.contract_end||"",full?.market_value||"",full?.matches??"",full?.goals??"",full?.assists??"",full?.minutes??"",p.status,p.shortlist||"",resolvedTmLink(full||p).url||p.external_link||"",full?.report||"",full?.strengths||"",full?.weaknesses||"",full?.action_note||"",full?.tag||""]});
   downloadPlayersXlsx(headers,rows,`ScoutCore_${onlyFiltered?"Filtreli":"Tum_Futbolcular"}_${new Date().toISOString().slice(0,10)}.xlsx`);
   setMessage(`${chosen.length} futbolcu Excel dosyasına aktarıldı.`);
  }
